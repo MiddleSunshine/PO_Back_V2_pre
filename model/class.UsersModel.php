@@ -25,7 +25,7 @@ class UserModel extends BaseModel{
 
     public function getNewToken(){
         if(defined('AUTH_TOKEN')){
-            return md5($this->Password.time().AUTH_TOKEN);
+            return md5($this->Password.date('Ym').AUTH_TOKEN);
         }
         throw new Exception("Please Update AuthToken");
     }

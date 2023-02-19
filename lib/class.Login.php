@@ -11,12 +11,13 @@ class Login extends Base{
         if(empty($token)){
             return self::returnActionResult($returnData);
         }
-        $loginUser=new LoginUser($token);
-        if(empty($loginUser->userData)){
-            return self::returnActionResult($returnData);
-        }
-        $returnData['Logined']=true;
+        $returnData['Logined']=static::checkUserLogined($token);
         return self::returnActionResult($returnData);
+    }
+
+    public static function checkUserLogined($token){
+        $loginUser=new LoginUser($token);
+        return !empty($loginUser->userData);
     }
 
     public function Login(){

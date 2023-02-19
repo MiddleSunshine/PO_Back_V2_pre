@@ -1,22 +1,14 @@
 <?php
-require_once __DIR__ . DIRECTORY_SEPARATOR . "class.MysqlPdo.php";
 
 class Base
 {
-    public static $table = '';
     protected $get;
     protected $post;
-    public $pdo;
 
     public function __construct($get = [], $post = '')
     {
         $this->get = $get;
         $this->post = $post;
-        $this->pdo = new MysqlPdo();
-    }
-
-    public function LoginCheck(){
-        
     }
 
     public static function returnActionResult($returnData = [], $isSuccess = true, $message = '')
@@ -26,13 +18,6 @@ class Base
             'Message' => $message,
             'Data' => $returnData
         ];
-    }
-
-    public function getTableField($table = '')
-    {
-        $sql = "desc " . ($table ?: static::$table);
-        $columns = $this->pdo->getRows($sql);
-        return array_column($columns, 'Field');
     }
 
     public static function getDateRange($startTime, $endTime, $dateFormat)

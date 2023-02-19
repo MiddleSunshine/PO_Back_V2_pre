@@ -1,6 +1,10 @@
 <?php
 
 class Login extends Base{
+    public function CheckLogin(){
+        
+    }
+
     public function Login(){
         $userName=$this->post['UserName'] ?? '';
         $password=$this->post['Password'] ?? '';

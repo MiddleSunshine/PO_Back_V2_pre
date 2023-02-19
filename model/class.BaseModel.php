@@ -40,7 +40,6 @@ class BaseModel{
         foreach($data as $field=>$value){
             $this->$field=$value;
         }
-        $this->data=$data;
         return $data;
     }
 
@@ -50,7 +49,9 @@ class BaseModel{
         if(empty($sql)){
             return [];
         }
-        return $this->pdo->getFirstRow($sql);
+        $data=$this->pdo->getFirstRow($sql);
+        $this->data=$data;
+        return $data;
     }
 
     public function getAllData(){

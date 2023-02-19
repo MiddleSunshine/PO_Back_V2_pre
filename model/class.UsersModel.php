@@ -26,7 +26,6 @@ class UserModel extends BaseModel{
             return false;
         }
         $token=$this->getNewToken();
-        file_put_contents(LOGIN_USERS.$token,json_encode());
         return $token;
     }
 

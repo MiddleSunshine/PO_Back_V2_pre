@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.LoginUser.php";
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.UsersModel.php";
 
 class Login extends Base{
     public function CheckLogin(){
@@ -9,7 +11,12 @@ class Login extends Base{
         if(empty($token)){
             return self::returnActionResult($returnData);
         }
-        
+        $loginUser=new LoginUser($token);
+        if(empty($loginUser->userData)){
+            return self::returnActionResult($returnData);
+        }
+        $returnData['Logined']=true;
+        return self::returnActionResult($returnData);
     }
 
     public function Login(){
@@ -26,6 +33,8 @@ class Login extends Base{
         if(empty($newToken)){
             return self::returnActionResult($this->post,false,'用户不存在或密码错误');
         }
+        $loginUser=new LoginUser($newToken);
+        $loginUser->storeData($userModel->toArray());
         return self::returnActionResult([
             'Token'=>$newToken
         ]);

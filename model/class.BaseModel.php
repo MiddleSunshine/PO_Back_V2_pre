@@ -90,7 +90,23 @@ class BaseModel{
         }
         $sql=sprintf("update %s set %s where %s;",static::$table,implode(',',$sql),$where);
         return $this->pdo->query($sql);
-        
+    }
+
+    public function insertOneData($data){
+        if(empty(static::$table)){
+            return false;
+        }
+        $field=implode(',',array_keys($data));
+        $value='"'.implode('","',array_map('addslashes',$data)).'"';
+        $sql=sprintf("insert %s (%s) value (%s);",static::$table,$field,$value);
+        return $this->pdo->query($sql);
+    }
+
+    public function insertData($data){
+        // todo 这里最好是能够使用事务
+        foreach($data as $oneData){
+            $this->insertOneData($oneData);
+        }
     }
 
     protected function reset(){

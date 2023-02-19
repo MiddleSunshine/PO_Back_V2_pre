@@ -109,6 +109,14 @@ class BaseModel{
         }
     }
 
+    public function delete($where){
+        if(empty(static::$table) || empty($where)){
+            return false;
+        }
+        $sql=sprintf("delete from %s where %s;",static::$table,$where);
+        return $this->pdo->query($sql);
+    }
+
     protected function reset(){
         $this->fieldData=[];
         $this->whereData=[];

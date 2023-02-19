@@ -30,6 +30,14 @@ class BaseModel{
         $this->whereData=array_merge($this->whereData,$where);
     }
 
+    public function getOneInstance(){
+        $data=$this->getOneData();
+        foreach($data as $field=>$value){
+            $this->$field=$value;
+        }
+        return $data;
+    }
+
     public function getOneData(){
         $sql=$this->organizeSql();
         $this->reset();

@@ -11,12 +11,13 @@ class Base
         $this->post = $post;
     }
 
-    public static function returnActionResult($returnData = [], $isSuccess = true, $message = '')
+    public static function returnActionResult($returnData = [], $isSuccess = true, $message = '',$forceLogin=false)
     {
         return [
             'Status' => $isSuccess ? 1 : 0,
             'Message' => $message,
-            'Data' => $returnData
+            'Data' => $returnData,
+            'NeedLogin'=>$forceLogin
         ];
     }
 

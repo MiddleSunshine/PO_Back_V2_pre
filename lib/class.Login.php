@@ -16,6 +16,9 @@ class Login extends Base{
     }
 
     public static function checkUserLogined($token){
+        if(empty($token)){
+            return false;
+        }
         $loginUser=new LoginUser($token);
         return !empty($loginUser->userData);
     }

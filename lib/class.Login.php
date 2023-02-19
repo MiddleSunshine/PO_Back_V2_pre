@@ -2,6 +2,13 @@
 
 class Login extends Base{
     public function CheckLogin(){
+        $token=$this->get['token'] ?? '';
+        $returnData=[
+            'Logined'=>false
+        ];
+        if(empty($token)){
+            return self::returnActionResult($returnData);
+        }
         
     }
 

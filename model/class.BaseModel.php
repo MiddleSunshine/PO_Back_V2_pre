@@ -3,6 +3,7 @@
 class BaseModel{
     public $pdo;
     public static $table;
+    public $data;
     public function __construct()
     {
         $this->pdo = new MysqlPdo(); 
@@ -12,6 +13,10 @@ class BaseModel{
      */
     protected $whereData=[];
     protected $fieldData=[];
+
+    public function toArray(){
+        return $this->data;
+    }
 
     public function select($field){
         if(is_string($field)){
@@ -35,6 +40,7 @@ class BaseModel{
         foreach($data as $field=>$value){
             $this->$field=$value;
         }
+        $this->data=$data;
         return $data;
     }
 

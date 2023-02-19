@@ -18,11 +18,16 @@ class UserModel extends BaseModel{
             sprintf("Name='%s'",addslashes($UserName)),
             sprintf("Password='%s'",addslashes($Password))
         ]);
+        /**
+         * @var UserModel $usrInstance
+         */
         $userInstace=$this->getOneInstance();
         if(empty($userInstace)){
             return false;
         }
-        return $this->getNewToken();
+        $token=$this->getNewToken();
+        file_put_contents(LOGIN_USERS.$token,json_encode());
+        return $token;
     }
 
     public function getNewToken(){

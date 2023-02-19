@@ -16,6 +16,7 @@ define("MD_FILE_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."md".DIRECTORY_SEPARATOR);
 define("BOOK_MARK_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."bookmarker".DIRECTORY_SEPARATOR);
 define("POINT_COLLECT_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."point_collect".DIRECTORY_SEPARATOR);
 define("SummaryFilePath",INDEX_FILE.DIRECTORY_SEPARATOR."summary");
+define('LOGIN_USERS',__DIR__.DIRECTORY_SEPARATOR."users".DIRECTORY_SEPARATOR);
 
 define("ES_SERVER","http://127.0.0.1:7700");
 define("AUTH_TOKEN",'h48hsihoshohsjijop803i0josnohog');
@@ -36,6 +37,10 @@ if(defined("BOOK_MARK_INDEX") && !is_dir(BOOK_MARK_INDEX)){
 
 if (defined("POINT_COLLECT_INDEX") && !is_dir(POINT_COLLECT_INDEX)){
     mkdir(POINT_COLLECT_INDEX);
+}
+
+if(defined('LOGIN_USERS') && !is_dir(LOGIN_USERS)){
+    mkdir(LOGIN_USERS);
 }
 
 function debug($logFileName,$content){

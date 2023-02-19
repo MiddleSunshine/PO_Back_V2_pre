@@ -7,7 +7,9 @@ class BaseModel{
     {
         $this->pdo = new MysqlPdo(); 
     }
-
+    /**
+     * select
+     */
     protected $whereData=[];
     protected $fieldData=[];
 
@@ -30,6 +32,7 @@ class BaseModel{
 
     public function getOneData(){
         $sql=$this->organizeSql();
+        $this->reset();
         if(empty($sql)){
             return [];
         }
@@ -38,6 +41,7 @@ class BaseModel{
 
     public function getAllData(){
         $sql=$this->organizeSql();
+        $this->reset();
         if(empty($sql)){
             return [];
         }
@@ -60,5 +64,37 @@ class BaseModel{
             $sql.=" where ".implode(' ',array_unique($this->whereData));
         }
         return $sql;
+    }
+
+    /**
+     * update
+     */
+    public function updateOneData(string $field,string $newData,string $where){
+        if(empty($field) || empty($where) || empty(static::$table)){
+            return false;
+        }
+        $sql=sprintf("update %s set %s='%s' where %s;",static::$table,$field,addslashes($newData),$where);
+        return $this->pdo->query($sql);
+    }
+
+    public function updateData($where,$data){
+        $sql=[];
+        foreach($data as $field=>$newValue){
+            if(empty($field)){
+                continue;
+            }
+            $sql[]=sprintf("%s='%s'",$field,addslashes($newValue));
+        }
+        if(empty($sql) || empty(static::$table) || empty($where)){
+            return false;
+        }
+        $sql=sprintf("update %s set %s where %s;",static::$table,implode(',',$sql),$where);
+        return $this->pdo->query($sql);
+        
+    }
+
+    protected function reset(){
+        $this->fieldData=[];
+        $this->whereData=[];
     }
 }

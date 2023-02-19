@@ -7,16 +7,16 @@ class Base
     protected $get;
     protected $post;
     public $pdo;
-    protected $authToken;
-    protected $authCheck = false;
-    protected $doNotCheckLogin=false;
 
     public function __construct($get = [], $post = '')
     {
         $this->get = $get;
         $this->post = $post;
-        $this->em_getallheaders();
         $this->pdo = new MysqlPdo();
+    }
+
+    public function LoginCheck(){
+        
     }
 
     public static function returnActionResult($returnData = [], $isSuccess = true, $message = '')
@@ -46,14 +46,6 @@ class Base
             $startTime += $oneDay;
         }
         return $returnData;
-    }
-
-    public function em_getallheaders()
-    {
-        $this->authToken = $this->get['sign'] ?? '';
-        if (empty($this->authToken) && defined('Login_Token')){
-            $this->authToken=Login_Token;
-        }
     }
 
     public static function getLocalDateN($timestamp){

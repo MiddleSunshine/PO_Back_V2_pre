@@ -4,13 +4,17 @@ PO_V2项目后端重构先行版
 ## 数据库修改
 
 ```sql
-CREATE TABLE `Users` (
-  `ID` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
-  `Name` varchar(30) NOT NULL,
-  `Password` varchar(50) NOT NULL,
-  `Token` varchar(30) DEFAULT NULL,
-  `AddTime` datetime DEFAULT NULL COMMENT 'Create Time',
-  `LastUpdateTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+create table Users
+(
+    ID             int auto_increment
+        primary key,
+    Name           varchar(30) null,
+    Password       varchar(30) null,
+    Token          varchar(30) null,
+    AddTime        datetime    null,
+    LastUpdateTime datetime    null
+);
+
+create unique index login
+    on Users (Name, Password);
 ```

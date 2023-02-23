@@ -4,9 +4,10 @@ class BaseModel{
     public $pdo;
     public static $table;
     public $data;
-    public function __construct()
+    public function __construct($data=[])
     {
-        $this->pdo = new MysqlPdo(); 
+        $this->pdo = new MysqlPdo();
+        $this->setData($data);
     }
     /**
      * select
@@ -50,7 +51,7 @@ class BaseModel{
             return [];
         }
         $data=$this->pdo->getFirstRow($sql);
-        $this->data=$data;
+        $this->setData($data);
         return $data;
     }
 
@@ -135,5 +136,12 @@ class BaseModel{
     protected function reset(){
         $this->fieldData=[];
         $this->whereData=[];
+    }
+
+    protected function setData($data){
+        $this->data=$data;
+        foreach ($this->data as $key=>$value){
+            $this->$key=$value;
+        }
     }
 }

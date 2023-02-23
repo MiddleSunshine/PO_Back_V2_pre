@@ -22,7 +22,10 @@ try {
         }
 
     }
-    $instance=new $action($_GET,$postData ?? '');
+    if (empty($_GET['sign'])){
+        echo json_encode(Base::returnActionResult($_GET,false,'账号异常，请重新登陆'),true);
+    }
+    $instance=new $action($_GET,$postData ?? '',$_GET['sign']);
     echo json_encode($instance->$method());
 }catch (\Exception $e){
     echo json_encode(Base::returnActionResult(

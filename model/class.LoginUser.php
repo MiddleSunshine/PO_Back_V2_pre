@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.DIRECTORY_SEPARATOR."class.UsersModel.php";
 
 class LoginUser{
     private $token;
@@ -33,5 +34,14 @@ class LoginUser{
         $this->loginTime=$data['LoginTime'];
         $this->userData=$data['User'];
         return $data;
+    }
+
+    /**
+     * @param $token string
+     * @return UserModel
+     */
+    public static function getLoginUser($token){
+        $self=new self($token);
+        return new UserModel($self->getData());
     }
 }

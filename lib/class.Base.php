@@ -5,10 +5,13 @@ class Base
     protected $get;
     protected $post;
 
-    public function __construct($get = [], $post = '')
+    protected $loginUserToken;
+
+    public function __construct($get = [], $post = '',$token='')
     {
         $this->get = $get;
         $this->post = $post;
+        $this->loginUserToken=$token;
     }
 
     public static function returnActionResult($returnData = [], $isSuccess = true, $message = '',$forceLogin=false)

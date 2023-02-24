@@ -10,10 +10,13 @@ class LoginUser{
         if(empty($this->token)){
             return false;
         }
-        $this->getData($token);
+        if (!$this->setData()){
+            return false;
+        }
+        return true;
     }
 
-    public function storeData($storeData){
+    public function storeData(array $storeData):void{
         $this->userData=$storeData;
         $this->loginTime=date("Y-m-d H:i:s");
         $data=[
@@ -23,7 +26,7 @@ class LoginUser{
         file_put_contents(LOGIN_USERS.$this->token,json_encode($data));
     }
 
-    public function getData(){
+    public function setData():array|bool{
         $filePath=LOGIN_USERS.$this->token;
         if(!file_exists($filePath)){
             return false;
@@ -37,10 +40,11 @@ class LoginUser{
 
     /**
      * @param $token string
-     * @return UserModel
+     * @return UsersModel
      */
-    public static function getLoginUser($token){
+    public static function getLoginUser(string $token): UsersModel
+    {
         $self=new self($token);
-        return new UserModel($self->getData());
+        return new UsersModel($self->userData);
     }
 }

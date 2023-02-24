@@ -11,6 +11,7 @@ $withoutLogined=[
 $action=ucwords($_GET['action'] ?? '');
 $method=ucwords($_GET['method'] ?? '');
 $postData=file_get_contents('php://input', 'r');
+$postData=json_decode($postData,1);
 try {
     if(!isset($withoutLogined[$action][$method])){
         // 并不是可以跳过登陆验证的路由

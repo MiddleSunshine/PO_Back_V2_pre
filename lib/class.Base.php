@@ -7,7 +7,7 @@ class Base
 
     protected $loginUserToken;
 
-    public function __construct($get = [], $post = '',$token='')
+    public function __construct($get = [], $post = [],$token='')
     {
         $this->get = $get;
         $this->post = $post;

@@ -3,7 +3,7 @@
 class BaseModel{
     public $pdo;
     public static $table;
-    public $data;
+    public $data=[];
     public function __construct($data=[])
     {
         if (DEBUG_MODE){
@@ -94,7 +94,9 @@ class BaseModel{
             return false;
         }
         $sql=sprintf("update %s set %s='%s' where %s;",static::$table,$field,addslashes($newData),$where);
-        return $this->pdo->query($sql);
+        $this->pdo->query($sql);
+        $this->setData([$field=>$newData]);
+        return true;
     }
 
     public function updateData($where,$data){
@@ -109,6 +111,7 @@ class BaseModel{
             return false;
         }
         $sql=sprintf("update %s set %s where %s;",static::$table,implode(',',$sql),$where);
+        $this->setData($data);
         return $this->pdo->query($sql);
     }
 
@@ -119,6 +122,7 @@ class BaseModel{
         $field=implode(',',array_keys($data));
         $value='"'.implode('","',array_map('addslashes',$data)).'"';
         $sql=sprintf("insert %s (%s) value (%s);",static::$table,$field,$value);
+        $this->data=$data;
         return $this->pdo->query($sql);
     }
 
@@ -143,7 +147,7 @@ class BaseModel{
     }
 
     protected function setData($data){
-        $this->data=$data;
+        $this->data=array_merge($this->data,$data);
         foreach ($this->data as $key=>$value){
             $this->$key=$value;
         }

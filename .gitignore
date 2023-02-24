@@ -9,3 +9,5 @@ composer.lock
 UnitTest/model/.phpunit.result.cache
 
 UnitTest/.phpunit.result.cache
+
+.phpunit.result.cache

@@ -6,6 +6,6 @@ class UserModelTest extends DataBaseTest {
     public function testSelect(){
         $userModel=new UserModel();
         $token=$userModel->checkUserExists('admin','admin');
-        $this->assertTrue(is_array($token));
+        $this->assertIsString($token);
     }
 }

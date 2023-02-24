@@ -16,7 +16,8 @@ class UserModel extends BaseModel{
     public function checkUserExists($UserName,$Password){
         $this->where([
             sprintf("Name='%s'",addslashes($UserName)),
-            sprintf("Password='%s'",addslashes($Password))
+            "and",
+            sprintf("`Password`='%s'",addslashes($Password))
         ]);
         /**
          * @var UserModel $usrInstance

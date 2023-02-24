@@ -6,7 +6,11 @@ class BaseModel{
     public $data;
     public function __construct($data=[])
     {
-        $this->pdo = new MysqlPdo();
+        if (DEBUG_MODE){
+            $this->pdo = new MysqlPdo(DEV_PROD_DB_NAME);
+        }else{
+            $this->pdo = new MysqlPdo();
+        }
         $this->setData($data);
     }
     /**

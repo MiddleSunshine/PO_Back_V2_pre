@@ -3,8 +3,9 @@
 // 允许跨域
 header("Access-Control-Allow-Origin: *");
 ini_set('date.timezone','Asia/Shanghai');
-define("PROD_DB_NAME","PO");
-define("PROD_DB_HOST","127.0.0.1");
+define("PROD_DB_NAME","PO_V2");
+define("DEV_PROD_DB_NAME","PO_V2_Dev");
+define("PROD_DB_HOST","127.0.0.1:23306");
 define("PROD_DB_USER","root");
 define("PROD_DB_PASS","1234qwer");
 define("PROD_DB_SOCKET","");

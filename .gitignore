@@ -4,3 +4,8 @@
 vendor/
 
 composer.lock
+/Debug/
+
+UnitTest/model/.phpunit.result.cache
+
+UnitTest/.phpunit.result.cache

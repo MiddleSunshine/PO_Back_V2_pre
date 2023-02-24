@@ -6,7 +6,23 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."
 use PHPUnit\Framework\TestCase;
 
 class DataBaseTest extends TestCase{
-    public function testD1(){
+    public function testCondition(){
         $this->assertTrue(true);
+    }
+
+    public function testSelect(){
+
+    }
+
+    public function testInsert(){
+
+    }
+
+    public function testUpdate(){
+
+    }
+
+    public function testDelete(){
+
     }
 }

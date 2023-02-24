@@ -27,6 +27,10 @@ function __autoload2($class){
     if (file_exists($fileName)){
         require_once $fileName;
     }else{
+        $fileName=INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.".$class.".php";
+        if (file_exists($fileName)){
+            require_once $fileName;
+        }
     }
 }
 

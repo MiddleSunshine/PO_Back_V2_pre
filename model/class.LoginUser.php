@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__.DIRECTORY_SEPARATOR."class.UsersModel.php";
 
 class LoginUser{
     private $token;

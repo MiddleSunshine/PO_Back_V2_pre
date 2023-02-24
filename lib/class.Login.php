@@ -32,7 +32,7 @@ class Login extends Base{
         if(empty($password)){
             return self::returnActionResult($this->post,false,'请输入密码');
         }
-        $userModel=new UserModel();
+        $userModel=new UsersModel();
         $newToken=$userModel->checkUserExists($userName,$password);
         if(empty($newToken)){
             return self::returnActionResult($this->post,false,'用户不存在或密码错误');

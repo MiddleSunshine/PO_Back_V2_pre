@@ -1,8 +1,6 @@
 <?php
 
-require_once __DIR__.DIRECTORY_SEPARATOR."class.BaseModel.php";
-
-class UserModel extends BaseModel{
+class UsersModel extends BaseModel{
     public static $table='Users';
 
     public $ID;
@@ -20,7 +18,7 @@ class UserModel extends BaseModel{
             sprintf("`Password`='%s'",addslashes($Password))
         ]);
         /**
-         * @var UserModel $usrInstance
+         * @var UsersModel $usrInstance
          */
         $userInstace=$this->getOneInstance();
         if(empty($userInstace)){

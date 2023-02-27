@@ -4,6 +4,8 @@ class Queues{
     public $todoQueueIndex;
     public $finishedQueueIndex;
     public $errorQueueIndex;
+
+    public $processingQueueIndex;
     public function __construct()
     {
         if (!defined('QUEUES_INDEX')){
@@ -24,6 +26,35 @@ class Queues{
         if (!is_dir($this->errorQueueIndex)){
             mkdir($this->errorQueueIndex);
         }
+        $this->processingQueueIndex=QUEUES_INDEX."processing".DIRECTORY_SEPARATOR;
+        if (!is_dir($this->processingQueueIndex)){
+            mkdir($this->processingQueueIndex);
+        }
+    }
+
+    public function getQueue($handlerId){
+        $files=scandir($this->todoQueueIndex);
+        unset($files[0]);
+        unset($files[1]);
+        $newQueuePath=$this->processingQueueIndex.$handlerId.DIRECTORY_SEPARATOR;
+        if (!is_dir($newQueuePath)){
+            mkdir($newQueuePath);
+        }
+        $queueFilePath='';
+        foreach ($files as $file){
+            $fd=fopen($this->todoQueueIndex.$file,'r+');
+            // 如果能获取到文件锁
+            if (flock($fd,LOCK_EX)){
+                // 将队列移动到指定的目录下，交给其他进程处理
+                $queueFilePath=$newQueuePath.$file;
+                copy($this->todoQueueIndex.$file,$queueFilePath);
+                flock($fd,LOCK_UN);
+                unlink($this->todoQueueIndex.$file);
+                break;
+            }
+            fclose($fd);
+        }
+        return $queueFilePath;
     }
 
     public function addQueue(string $queueName,string $id,array $data,bool $updateQueueWhenExists=false){

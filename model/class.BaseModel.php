@@ -136,9 +136,17 @@ class BaseModel{
         if(empty(static::$table)){
             return false;
         }
+        if (empty($data)){
+            return false;
+        }
         $field=implode(',',array_keys($data));
-        $value='"'.implode('","',array_map('addslashes',$data)).'"';
-        $sql=sprintf("insert %s (%s) value (%s);",static::$table,$field,$value);
+        $value='';
+        foreach ($data as $valueItem){
+            $value.=is_int($valueItem)?$valueItem:sprintf("'%s'",addslashes($valueItem));
+            $value.=",";
+        }
+        $value=substr($value,0,-1);
+        $sql=sprintf("insert into %s (%s) value (%s);",static::$table,$field,$value);
         $this->data=$data;
         return $this->pdo->query($sql);
     }

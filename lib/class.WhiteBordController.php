@@ -1,6 +1,6 @@
 <?php
 
-class WhiteBord extends Base{
+class WhiteBordController extends Base{
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);

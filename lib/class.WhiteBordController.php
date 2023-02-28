@@ -16,22 +16,36 @@ class WhiteBordController extends Base{
         return self::returnActionResult($returnData);
     }
 
-    public function StoreWhiteBordAsDraft(){
-        $id=$this->get['ID'] ?? '0';
+    public function CreateWhiteBord()
+    {
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);
-        $whiteBordDir=WhiteBordModel::getWhiteBordFileDir($id,$loginUser->ID,true);
-        $storeData=$this->post['Data'] ?? [];
-        file_put_contents($whiteBordDir,json_encode($storeData));
-        return self::returnActionResult();
+        $whiteBord=new WhiteBord($loginUser);
+        $title=$this->post['Title'] ?? 'Unknown';
+        $type=$this->post['Type'] ?? WhiteBordModel::TYPE_DRAFT;
+        $whiteBordModel=$whiteBord->addWhiteBord($title,$type);
+        return self::returnActionResult(
+            [
+                'ID'=>$whiteBordModel->ID
+            ]
+        );
     }
 
     public function StoreWhiteBord(){
         $id=$this->get['ID'] ?? '0';
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);
-        $whiteBordDir=WhiteBordModel::getWhiteBordFileDir($id,$loginUser->ID);
         $storeData=$this->post['Data'] ?? [];
-        // todo 这里考虑减少存储的数据
+        $isDraft=$this->post['IsDraft'] ?? true;
+        $whiteBordDir=WhiteBordFileManager::getWhiteBordFileDir($id,$loginUser->ID,$isDraft);
         file_put_contents($whiteBordDir,json_encode($storeData));
+        $whiteBord=new WhiteBord($loginUser);
+        $whiteBord->updateWhiteBord($id,[
+            'LocalFilePath'=>$whiteBordDir,
+            'Type'=>$isDraft?WhiteBordModel::TYPE_DRAFT:WhiteBordModel::TYPE_DATA
+        ]);
+        if (!$isDraft){
+            $queue=new Queues();
+            $queue->addQueue(WhiteBordQueue::QUEUE_NAME,$id,WhiteBordQueue::updateQueue(),true);
+        }
         return self::returnActionResult();
     }
 }

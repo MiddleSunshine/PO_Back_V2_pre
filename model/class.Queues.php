@@ -1,6 +1,8 @@
 <?php
 
 class Queues{
+    const QUEUE_NAME_WHITEBORD='WhiteBord';
+
     public $todoQueueIndex;
     public $finishedQueueIndex;
     public $errorQueueIndex;
@@ -57,7 +59,7 @@ class Queues{
         return $queueFilePath;
     }
 
-    public function addQueue(string $queueName,string $id,array $data,bool $updateQueueWhenExists=false){
+    public function addQueue(string $queueName,string $id,array|string $data,bool $updateQueueWhenExists=false){
         if (empty($queueName) || empty($id)){
             return false;
         }

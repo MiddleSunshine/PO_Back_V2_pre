@@ -17,7 +17,8 @@ class WhiteBord extends BaseUserModel{
         return $whiteBordModel;
     }
 
-    public function updateWhiteBord($ID,$data){
+    public function updateWhiteBord($ID,$data):WhiteBordModel
+    {
         $whiteBordModel=$this->getWhiteBordModel();
         $whiteBordModel->updateData(sprintf('ID=%d',$ID),$data);
         return $whiteBordModel;

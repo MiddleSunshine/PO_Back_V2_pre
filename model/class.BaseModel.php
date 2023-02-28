@@ -110,7 +110,8 @@ class BaseModel{
         if(empty($field) || empty($where) || empty(static::$table)){
             return false;
         }
-        $sql=sprintf("update %s set %s='%s' where %s;",static::$table,$field,addslashes($newData),$where);
+        $isString=is_int($newData)?'':"'";
+        $sql=sprintf("update %s set %s=%s%s%s where %s;",static::$table,$field,$isString,addslashes($newData),$isString,$where);
         $this->pdo->query($sql);
         $this->setData([$field=>$newData]);
         return true;
@@ -122,7 +123,8 @@ class BaseModel{
             if(empty($field)){
                 continue;
             }
-            $sql[]=sprintf("%s='%s'",$field,addslashes($newValue));
+            $isString=is_int($newValue)?'':"'";
+            $sql[]=sprintf("%s=%s%s%s",$field,$isString,addslashes($newValue),$isString);
         }
         if(empty($sql) || empty(static::$table) || empty($where)){
             return false;

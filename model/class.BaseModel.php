@@ -19,6 +19,10 @@ class BaseModel{
     protected $whereData=[];
     protected $fieldData=[];
 
+    public function setTable(string $tableName){
+        static::$table=$tableName;
+    }
+
     public function toArray(){
         return $this->data;
     }

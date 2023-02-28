@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.DIRECTORY_SEPARATOR."class.BaseModel.php";
 
-class WhiteBordModel extends BaseModel {
+class WhiteBordFileManager {
     public static function getWhiteBordDirectory():string
     {
         if (!defined('MD_FILE_INDEX')){
@@ -13,7 +13,8 @@ class WhiteBordModel extends BaseModel {
         return MD_FILE_INDEX;
     }
 
-    public static function getWhiteBordFileDir($id,$user_id,$isDraft=false){
+    public static function getWhiteBordFileDir($id,$user_id,$isDraft=false):string
+    {
         $userDir=self::getWhiteBordDirectory().$user_id.DIRECTORY_SEPARATOR.($isDraft?'Draft':'WhiteBord').DIRECTORY_SEPARATOR;
         if (!is_dir($userDir)){
             mkdir($userDir);

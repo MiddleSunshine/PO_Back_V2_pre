@@ -58,6 +58,13 @@ class MysqlPdo
         }
     }
 
+    function isTableExisting($_table_name)
+    {
+        $sql = "SHOW TABLES LIKE '$_table_name'";
+        if($this->getFirstRowColumn($sql)) return true;
+        return false;
+    }
+
     function pdo_ping($dbconn)
     {
         try {

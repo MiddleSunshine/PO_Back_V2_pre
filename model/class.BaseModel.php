@@ -19,6 +19,12 @@ class BaseModel{
     protected $whereData=[];
     protected $fieldData=[];
 
+    protected $orderData=[];
+
+    public function checkTableExists($table){
+        return $this->pdo->isTableExisting($table);
+    }
+
     public function setTable(string $tableName){
         static::$table=$tableName;
     }
@@ -42,6 +48,10 @@ class BaseModel{
             return false;
         }
         $this->whereData=array_merge($this->whereData,$where);
+    }
+
+    public function orderBy(string $order){
+        $this->orderData[$order]=$order;
     }
 
     public function getOneInstance(){
@@ -86,6 +96,9 @@ class BaseModel{
         $sql=sprintf("select %s from %s",$this->fieldData,static::$table);
         if(!empty($this->whereData)){
             $sql.=" where ".implode(' ',array_unique($this->whereData));
+        }
+        if (!empty($this->orderData)){
+            $sql.=" order by ".implode(',',array_unique($this->orderData));
         }
         return $sql;
     }
@@ -148,6 +161,7 @@ class BaseModel{
     protected function reset(){
         $this->fieldData=[];
         $this->whereData=[];
+        $this->orderData=[];
     }
 
     protected function setData($data){

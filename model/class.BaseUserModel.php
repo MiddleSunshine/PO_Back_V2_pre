@@ -23,6 +23,7 @@ abstract class BaseUserModel{
         return sprintf("create table %s %s;",static::$tableName,static::getTableTemplate());
     }
 
+    abstract protected static function getModel():BaseModel;
     abstract protected static function getTableName():string;
     abstract protected static function getTableTemplate():string;
 }

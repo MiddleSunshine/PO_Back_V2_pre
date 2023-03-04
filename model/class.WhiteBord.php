@@ -4,7 +4,7 @@ require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR
 class WhiteBord extends BaseUserModel{
 
     public function addWhiteBord($title,$type=WhiteBordModel::TYPE_DRAFT):WhiteBordModel{
-        $whiteBordModel=$this->getWhiteBordModel();
+        $whiteBordModel=self::getModel();
         $whiteBordModel->insertOneData(
             [
                 'Title'=>$title,
@@ -19,7 +19,7 @@ class WhiteBord extends BaseUserModel{
 
     public function updateWhiteBord($ID,$data):WhiteBordModel
     {
-        $whiteBordModel=$this->getWhiteBordModel();
+        $whiteBordModel=self::getModel();
         $whiteBordModel->updateData(sprintf('ID=%d',$ID),$data);
         return $whiteBordModel;
     }
@@ -32,7 +32,7 @@ class WhiteBord extends BaseUserModel{
 
     }
 
-    public function getWhiteBordModel():WhiteBordModel
+    public static function getModel():WhiteBordModel
     {
         $whiteBordModel=new WhiteBordModel();
         $whiteBordModel->setTable(static::$tableName);

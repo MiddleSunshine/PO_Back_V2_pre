@@ -9,7 +9,13 @@ class DealWithQueue{
      * @return void
      */
     public function onWorkerStart($worker){
-        Timer::add(5,[$this,'handleQueue'],[$worker->id]);
+        Timer::add(10,[$this,'handleQueue'],[$worker->id]);
+        Timer::add(10,[$this,'arrangeQueue'],[$worker->id]);
+    }
+
+    public function arrangeQueue($handlerId){
+        $queueInstance=new Queues();
+        $queueInstance->setQueue($handlerId);
     }
 
     public function handleQueue($handlerId){

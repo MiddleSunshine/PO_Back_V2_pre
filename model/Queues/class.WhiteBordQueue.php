@@ -45,6 +45,15 @@ class WhiteBordQueue extends QueueInstance {
             $nodes[]=$node['data'];
         }
         $nodeModels=$nodeInstance->updateNode($nodes);
-        
+        foreach ($whiteBordData['data']['nodes'] as $index=>&$node){
+            /**
+             * @var $nodeModel NodeModel
+             */
+            $nodeModel=$nodeModels[$index];
+            $node['data']=$nodeModel->toArray();
+            file_put_contents($nodeModel->LocalFilePath,json_encode($node));
+        }
+        file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
+        return true;
     }
 }

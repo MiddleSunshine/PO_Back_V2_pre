@@ -34,7 +34,7 @@ class Queues{
         }
     }
 
-    public function getQueue($handlerId){
+    public function setQueue($handlerId){
         $files=scandir($this->todoQueueIndex);
         unset($files[0]);
         unset($files[1]);
@@ -72,16 +72,27 @@ class Queues{
     }
 
     public function handleQueue($handlerId){
-        $queueFilePath=$this->getQueue($handlerId);
-        if (empty($queueFilePath)){
+        $queuesDir=$this->processingQueueIndex.$handlerId.DIRECTORY_SEPARATOR;
+        $queues=scandir($queuesDir);
+        if (empty($queues)){
             return false;
         }
-        $queueContent=file_get_contents($queueFilePath);
-        $queueContent=json_decode($queueContent,1);
-        switch ($queueContent['type']){
-            case WhiteBordQueue::getType():
-                WhiteBordQueue::handleQueue($queueContent['data']);
-                break;
+        foreach ($queues as $queue){
+            $queueContent=file_get_contents($queuesDir.$queue);
+            $queueContent=json_decode($queueContent,1);
+            $handleResult=true;
+            switch ($queueContent['type']){
+                case WhiteBordQueue::getType():
+                    $handleResult=WhiteBordQueue::handleQueue($queueContent['data']);
+                    break;
+            }
+            if ($handleResult){
+                unlink($queuesDir.$queue);
+            }else{
+                copy($queuesDir.$queue,$this->errorQueueIndex.$queue);
+                unlink($queuesDir.$queue);
+            }
         }
+
     }
 }

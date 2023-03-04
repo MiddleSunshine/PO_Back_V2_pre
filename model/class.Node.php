@@ -17,7 +17,7 @@ class Node extends BaseUserModel{
                 $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time());
                 $nodeModel->newNode($node);
             }
-            $nodeIds[$index]=$nodeModel->ID;
+            $nodeIds[$index]=$nodeModel;
         }
         return $nodeIds;
     }

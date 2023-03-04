@@ -67,7 +67,21 @@ class Queues{
         if (file_exists($storeFileName) && !$updateQueueWhenExists){
             return true;
         }
-        file_put_contents($storeFileName,json_encode($data));
+        file_put_contents($storeFileName,json_encode(['type'=>$queueName,'data'=>$data]));
         return true;
+    }
+
+    public function handleQueue($handlerId){
+        $queueFilePath=$this->getQueue($handlerId);
+        if (empty($queueFilePath)){
+            return false;
+        }
+        $queueContent=file_get_contents($queueFilePath);
+        $queueContent=json_decode($queueContent,1);
+        switch ($queueContent['type']){
+            case WhiteBordQueue::getType():
+                WhiteBordQueue::handleQueue($queueContent['data']);
+                break;
+        }
     }
 }

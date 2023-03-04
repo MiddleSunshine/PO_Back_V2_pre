@@ -1,5 +1,5 @@
 <?php
-
+require_once INDEX_FILE."Queses".DIRECTORY_SEPARATOR."class.WhiteBordController.php";
 class WhiteBordController extends Base{
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';
@@ -38,13 +38,14 @@ class WhiteBordController extends Base{
         $whiteBordDir=WhiteBordFileManager::getWhiteBordFileDir($id,$loginUser->ID,$isDraft);
         file_put_contents($whiteBordDir,json_encode($storeData));
         $whiteBord=new WhiteBord($loginUser);
-        $whiteBord->updateWhiteBord($id,[
+        $whiteBordModel=$whiteBord->updateWhiteBord($id,[
             'LocalFilePath'=>$whiteBordDir,
             'Type'=>$isDraft?WhiteBordModel::TYPE_DRAFT:WhiteBordModel::TYPE_DATA
         ]);
         if (!$isDraft){
             $queue=new Queues();
-            $queue->addQueue(WhiteBordQueue::QUEUE_NAME,$id,WhiteBordQueue::updateQueue(),true);
+            $whiteBordQueue=new WhiteBordQueue($whiteBordModel);
+            $queue->addQueue(WhiteBordQueue::getType(),$id,$whiteBordQueue->getStoreData(),true);
         }
         return self::returnActionResult();
     }

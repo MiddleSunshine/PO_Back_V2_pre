@@ -44,7 +44,7 @@ class WhiteBordController extends Base{
         ]);
         if (!$isDraft){
             $queue=new Queues();
-            $whiteBordQueue=new WhiteBordQueue($whiteBordModel);
+            $whiteBordQueue=new WhiteBordQueue($whiteBordModel,$loginUser);
             $queue->addQueue(WhiteBordQueue::getType(),$id."_".$loginUser->ID,$whiteBordQueue->getStoreData(),true);
         }
         return self::returnActionResult();

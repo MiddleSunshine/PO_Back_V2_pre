@@ -1,12 +1,10 @@
 <?php
 
 class WhiteBordQueue extends QueueInstance {
-    public $whiteBordId;
-    public $whiteBordFilePath;
+    protected $whiteBordModel;
     public function __construct(WhiteBordModel $whiteBordModel)
     {
-        $this->whiteBordId=$whiteBordModel->ID;
-        $this->whiteBordFilePath=$whiteBordModel->LocalFilePath;
+       $this->whiteBordModel=$whiteBordModel;
     }
 
     public static function getType(): string
@@ -17,13 +15,14 @@ class WhiteBordQueue extends QueueInstance {
     public function getStoreData(): array
     {
         return [
-            'FilePath'=>$this->whiteBordFilePath,
-            'ID'=>$this->whiteBordId
+            'FilePath'=>$this->whiteBordModel->LocalFilePath,
+            'ID'=>$this->whiteBordModel->ID,
+            'TableName'=>$this->whiteBordModel->getTable()
         ];
     }
 
     public static function handleQueue($queueStoreData): bool
     {
-        // TODO: Implement handleQueue() method.
+        return true;
     }
 }

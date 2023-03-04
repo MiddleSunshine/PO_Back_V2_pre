@@ -29,6 +29,10 @@ class BaseModel{
         static::$table=$tableName;
     }
 
+    public function getTable():string{
+        return static::$table;
+    }
+
     public function toArray(){
         return $this->data;
     }

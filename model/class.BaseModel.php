@@ -62,6 +62,14 @@ class BaseModel{
         return $data;
     }
 
+    public function getLastestData()
+    {
+        $sql=sprintf("select * from %s order by ID desc limit 1",static::$table);
+        $data=$this->pdo->getFirstRow($sql);
+        $this->setData($data);
+        return $data;
+    }
+
     public function getOneData(){
         $sql=$this->organizeSql();
         $this->reset();

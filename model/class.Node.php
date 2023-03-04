@@ -1,9 +1,28 @@
 <?php
-
+require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR."class.NodeModel.php";
 class Node extends BaseUserModel{
 
-    public function updateNode(){
-
+    public function updateNode($nodes):array
+    {
+        $nodeIds=[];
+        foreach ($nodes as $index=>$node){
+            if (!empty($node['ID'])){
+                // update
+                $nodeModel=new NodeModel();
+                $nodeModel->where([sprintf('ID=%d',$node['ID'])]);
+                $nodeModel->getOneInstance();
+                $nodeModel->updateNode($node);
+            }else{
+                // insert
+                $nodeModel=new NodeModel();
+                $nodeModel->insertOneData($node);
+                $nodeModel->getLastestData();
+                $nodeModel->LocalFilePath=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,$nodeModel->ID);
+                $nodeModel->updateOneData('LocalFilePath',$nodeModel->LocalFilePath,sprintf('ID=%d',$nodeModel->ID));
+            }
+            $nodeIds[$index]=$nodeModel->ID;
+        }
+        return $nodeIds;
     }
 
     public static function getModel(): NodeModel

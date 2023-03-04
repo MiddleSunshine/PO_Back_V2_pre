@@ -1,7 +1,22 @@
 <?php
+require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR."class.WhiteBordNodeConnectionModel.php";
 
 class WhiteBordNodeConnection extends BaseUserModel {
 
+    public function updateConnection($whiteBordId,$nodes){
+        ($this->getModel())->updateWhiteNodeConnection($whiteBordId,$nodes);
+        return true;
+    }
+
+    public function getAllConnection($whiteBordId){
+        return ($this->getModel())->getAllConnection($whiteBordId);
+    }
+    public function getModel():WhiteBordNodeConnectionModel
+    {
+        $mode=new WhiteBordNodeConnectionModel();
+        $mode->setTable(static::$tableName);
+        return $mode;
+    }
     protected static function getTableName(): string
     {
         return 'WhiteBord_Node_Connection';

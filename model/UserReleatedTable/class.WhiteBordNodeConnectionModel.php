@@ -1,6 +1,12 @@
 <?php
 
 class WhiteBordNodeConnectionModel extends BaseModel{
+
+    public function getAllConnection($whiteBordId):array
+    {
+        $sql=sprintf("select N_ID from %s where W_ID=%d;",static::$table,$whiteBordId);
+        return $this->pdo->getRows($sql,'N_ID');
+    }
     public function updateWhiteNodeConnection($whiteBordId,$nodeIds){
         $sql=sprintf("select N_ID from %s where W_ID=%d;",static::$table,$whiteBordId);
         $historyConnections=$this->pdo->getRows($sql,'N_ID');

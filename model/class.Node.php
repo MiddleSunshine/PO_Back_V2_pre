@@ -6,19 +6,16 @@ class Node extends BaseUserModel{
     {
         $nodeIds=[];
         foreach ($nodes as $index=>$node){
+            $nodeModel=new NodeModel();
             if (!empty($node['ID'])){
                 // update
-                $nodeModel=new NodeModel();
                 $nodeModel->where([sprintf('ID=%d',$node['ID'])]);
                 $nodeModel->getOneInstance();
                 $nodeModel->updateNode($node);
             }else{
                 // insert
-                $nodeModel=new NodeModel();
-                $nodeModel->insertOneData($node);
-                $nodeModel->getLastestData();
-                $nodeModel->LocalFilePath=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,$nodeModel->ID);
-                $nodeModel->updateOneData('LocalFilePath',$nodeModel->LocalFilePath,sprintf('ID=%d',$nodeModel->ID));
+                $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time());
+                $nodeModel->newNode($node);
             }
             $nodeIds[$index]=$nodeModel->ID;
         }

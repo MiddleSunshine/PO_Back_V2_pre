@@ -16,4 +16,12 @@ class NodeModel extends BaseModel{
         }
         return $this->updateData(sprintf("ID=%d",$newNode['ID']),$newNode);
     }
+
+    public function newNode($nodeData)
+    {
+        empty($nodeData['AddTime']) && $nodeData['AddTime']=date("Y-m-d H:i:s");
+        empty($nodeData['LastUpdateTime']) && $nodeData['LastUpdateTime']=date("Y-m-d H:i:s");
+        $this->insertOneData($nodeData);
+        return $this->getLastestData();
+    }
 }

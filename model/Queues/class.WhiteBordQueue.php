@@ -32,6 +32,7 @@ class WhiteBordQueue extends QueueInstance {
             return false;
         }
         $whiteBordData=file_get_contents($whiteBordFilePath);
+        $whiteBordData=json_decode($whiteBordData,1);
         $loginUserID=$queueStoreData['User_ID'];
         if (empty($loginUserID)){
             return false;

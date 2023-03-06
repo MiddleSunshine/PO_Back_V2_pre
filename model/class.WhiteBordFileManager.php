@@ -19,12 +19,20 @@ class WhiteBordFileManager {
         if (!is_dir($dir)){
             mkdir($dir);
         }
-        return $dir."Node".$nodeId.".json";
+        $dir.="Node".DIRECTORY_SEPARATOR;
+        if (!is_dir($dir)){
+            mkdir($dir);
+        }
+        return $dir.$nodeId.".json";
     }
 
     public static function getWhiteBordFileDir($id,$user_id,$isDraft=false):string
     {
-        $userDir=self::getStoreFileDir().$user_id.DIRECTORY_SEPARATOR.($isDraft?'Draft':'WhiteBord').DIRECTORY_SEPARATOR;
+        $userDir=self::getStoreFileDir().$user_id.DIRECTORY_SEPARATOR;
+        if (!is_dir($userDir)){
+            mkdir($userDir);
+        }
+        $userDir.=($isDraft?'Draft':'WhiteBord').DIRECTORY_SEPARATOR;
         if (!is_dir($userDir)){
             mkdir($userDir);
         }

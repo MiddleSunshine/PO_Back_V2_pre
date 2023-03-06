@@ -44,6 +44,10 @@ if (defined("QUEUES_INDEX") && !is_dir(QUEUES_INDEX)){
     mkdir(QUEUES_INDEX);
 }
 
+if (MD_FILE_INDEX && !is_dir(MD_FILE_INDEX)){
+    mkdir(MD_FILE_INDEX);
+}
+
 if(defined('LOGIN_USERS') && !is_dir(LOGIN_USERS)){
     mkdir(LOGIN_USERS);
 }

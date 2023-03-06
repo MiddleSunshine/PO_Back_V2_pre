@@ -1,5 +1,5 @@
 <?php
-require_once INDEX_FILE."Queses".DIRECTORY_SEPARATOR."class.WhiteBordController.php";
+require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.WhiteBordQueue.php";
 class WhiteBordController extends Base{
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';

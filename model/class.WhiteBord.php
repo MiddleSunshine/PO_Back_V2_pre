@@ -35,7 +35,7 @@ class WhiteBord extends BaseUserModel{
     public static function getModel():WhiteBordModel
     {
         $whiteBordModel=new WhiteBordModel();
-        $whiteBordModel->setTable(static::getTableName());
+        $whiteBordModel->setTable(static::$tableName);
         return $whiteBordModel;
     }
 

@@ -14,7 +14,7 @@ class Node extends BaseUserModel{
                 $nodeModel->updateNode($node);
             }else{
                 // insert
-                $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time());
+                $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time()."_".$index);
                 $nodeModel->newNode($node);
             }
             $nodeIds[$index]=$nodeModel;

@@ -23,7 +23,13 @@ class WhiteBordFileManager {
         if (!is_dir($dir)){
             mkdir($dir);
         }
-        return $dir.$nodeId.".json";
+        $filePath=$dir.$nodeId.".json";
+        $endLessPrevent=0;
+        while (file_exists($filePath) && $endLessPrevent<10){
+            $endLessPrevent++;
+            $filePath=$dir.$nodeId."_".rand(0,1000).".json";
+        }
+        return $filePath;
     }
 
     public static function getWhiteBordFileDir($id,$user_id,$isDraft=false):string

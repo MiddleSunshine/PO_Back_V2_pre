@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__.DIRECTORY_SEPARATOR."class.QueueInstance.php";
 class WhiteBordQueue extends QueueInstance {
     protected $whiteBordModel;
     protected $loginUserInstance;

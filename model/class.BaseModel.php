@@ -187,6 +187,7 @@ class BaseModel{
     }
 
     protected function setData($data){
+        empty($data) && $data=[];
         $this->data=array_merge($this->data,$data);
         foreach ($this->data as $key=>$value){
             $this->$key=$value;

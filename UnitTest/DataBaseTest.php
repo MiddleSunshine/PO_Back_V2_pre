@@ -6,6 +6,35 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."
 use PHPUnit\Framework\TestCase;
 
 class DataBaseTest extends TestCase{
+    protected function getData(){
+        return [];
+    }
+
+    protected function organizeData(){
+        $data=$this->getData();
+        $mysql=new MysqlPdo();
+        $this->storeDataIntoDatabase($mysql,$data);
+    }
+
+    private function storeDataIntoDatabase($objMysql,&$data){
+        foreach ($data as $table=>$rows){
+            $sql=sprintf("truncate table %s;",$table);
+            print PHP_EOL.$sql.PHP_EOL;
+            $objMysql->query($sql);
+            foreach ($rows as $row){
+                $fiels=implode(',',array_keys($row));
+                $value="";
+                foreach ($row as $valueItem){
+                    $value.=is_int($valueItem)?$valueItem:sprintf("'%s'",addslashes($valueItem));
+                    $value.=",";
+                }
+                $value=substr($value,0,-1);
+                $sql=sprintf("insert into %s (%s) value (%s);",$table,$fiels,$value);
+                print PHP_EOL.$sql.PHP_EOL;
+                $objMysql->query($sql);
+            }
+        }
+    }
     /**
      * @var UsersModel
      */

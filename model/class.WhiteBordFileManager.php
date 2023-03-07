@@ -13,7 +13,7 @@ class WhiteBordFileManager {
         return MD_FILE_INDEX;
     }
 
-    public static function getNodeFileDir($user_id,$nodeId):string
+    public static function getNodeFileDir($user_id,$nodeId=''):string
     {
         $dir=static::getStoreFileDir().$user_id.DIRECTORY_SEPARATOR;
         if (!is_dir($dir)){
@@ -22,6 +22,9 @@ class WhiteBordFileManager {
         $dir.="Node".DIRECTORY_SEPARATOR;
         if (!is_dir($dir)){
             mkdir($dir);
+        }
+        if (empty($nodeId)){
+            return $dir;
         }
         $filePath=$dir.$nodeId.".json";
         $endLessPrevent=0;

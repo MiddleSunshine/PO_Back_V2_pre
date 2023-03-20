@@ -2,13 +2,15 @@
 require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR."class.NodeModel.php";
 class Node extends BaseUserModel{
 
+
+
     public function getNodeModel($data){
         $node=new NodeModel($data);
         $node->setTable(static::$tableName);
         return $node;
     }
 
-    public function searchNode($fields,$where):array
+    public function searchNode($fields,array $where):array
     {
         $model=self::getModel();
         $model->select($fields);

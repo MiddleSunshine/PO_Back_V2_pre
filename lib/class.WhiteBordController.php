@@ -1,5 +1,7 @@
 <?php
 require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.WhiteBordQueue.php";
+require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.Node.php";
+
 class WhiteBordController extends Base{
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';
@@ -12,7 +14,29 @@ class WhiteBordController extends Base{
             $content=file_get_contents($whiteBordDir);
             $returnData['WhiteBordContent']=json_decode($content,1);
         }
-        // todo 这里还要加上 node 和 edges 解析的部分
+
+        if (!empty($returnData['WhiteBordContent']['data']['nodes'])){
+            $nodeInstance=new Node($loginUser);
+            $nodeIds=[];
+            $nodeIdsLastUpdateTime=[];
+            foreach ($returnData['WhiteBordContent']['data']['nodes'] as $index=>$node){
+                if (!empty($node['data']['ID'])){
+                    $nodeIds[$node['data']['ID']]=$index;
+                    $nodeIdsLastUpdateTime[$node['data']['ID']]=strtotime($node['data']['LastUpdateTime']);
+                }
+            }
+            $nodeData=$nodeInstance->searchNode('*',[sprintf("ID in (%s)",implode(',',$nodeIds))]);
+            foreach ($nodeData as $nodeItem){
+                $dataBaseLastUpdateTimestamp=strtotime($nodeItem['LastUpdateTime']);
+                // 拥有本地文件 && 数据库数据更新
+                if (!empty($nodeItem['LocalFilePath']) && $dataBaseLastUpdateTimestamp>$nodeIdsLastUpdateTime[$nodeItem['ID']]){
+                    $nData=file_get_contents($nodeItem['LocalFilePath']);
+                    if (isset($nodeIds[$nodeItem['ID']])){
+                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nData;
+                    }
+                }
+            }
+        }
         return self::returnActionResult($returnData);
     }
 

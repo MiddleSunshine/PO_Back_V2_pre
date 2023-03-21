@@ -6,7 +6,9 @@ class WhiteBordController extends Base{
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);
-        $whiteBordDir=WhiteBordFileManager::getWhiteBordFileDir($id,$loginUser->ID,true);
+        $whiteBordInstance=new WhiteBord($loginUser);
+        $whiteBordModel=$whiteBordInstance->seleteWhiteBord('*',[sprintf('ID=%d',$id)]);
+        $whiteBordDir=$whiteBordModel->LocalFilePath;
         $returnData=[
             'WhiteBordContent'=>[
                 'data'=>[

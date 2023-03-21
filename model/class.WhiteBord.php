@@ -28,8 +28,12 @@ class WhiteBord extends BaseUserModel{
 
     }
 
-    public function seleteWhiteBord(){
-
+    public function seleteWhiteBord(string $field,array $where){
+        $model=self::getModel();
+        $model->select($field);
+        $model->where($where);
+        $model->getOneData();
+        return $model;
     }
 
     public static function getModel():WhiteBordModel

@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__.DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.WhiteBordQueue.php";
 class Queues{
     const QUEUE_NAME_WHITEBORD='WhiteBord';
 

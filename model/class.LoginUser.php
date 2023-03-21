@@ -33,7 +33,7 @@ class LoginUser{
         }
         $data=file_get_contents($filePath);
         $data=json_decode($data,1);
-        $this->loginTime=$data['LoginTime'];
+        $this->loginTime=date('Y-m-d H:i:s');
         $this->userData=$data['User'];
         return $data;
     }

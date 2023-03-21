@@ -8,7 +8,13 @@ class WhiteBordController extends Base{
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);
         $whiteBordDir=WhiteBordFileManager::getWhiteBordFileDir($id,$loginUser->ID,true);
         $returnData=[
-            'WhiteBordContent'=>[]
+            'WhiteBordContent'=>[
+                'data'=>[
+                    'nodes'=>[],
+                    'edges'=>[]
+                ],
+                'settings'=>[]
+            ]
         ];
         if (file_exists($whiteBordDir)){
             $content=file_get_contents($whiteBordDir);

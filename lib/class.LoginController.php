@@ -2,7 +2,7 @@
 require_once dirname(__DIR__).DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.LoginUser.php";
 require_once dirname(__DIR__).DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.UsersModel.php";
 
-class Login extends Base{
+class LoginController extends Base{
     public function CheckLogin(){
         $token=$this->get['token'] ?? '';
         $returnData=[

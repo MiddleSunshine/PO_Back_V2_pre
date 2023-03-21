@@ -2,9 +2,9 @@
 require_once __DIR__.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."config.php";
 
 $withoutLogined=[
-    'Login'=>[
-        'CheckLogin'=>1,
-        'Login'=>1
+    'LoginController'=>[
+        'CheckLogin'=>1,// 需要验证 sign
+        'Login'=>0 // 不需要验证 sign
     ]
 ];
 
@@ -21,9 +21,8 @@ try {
             echo json_encode(Base::returnActionResult($_GET,false,'请先登陆',true));
             return false;
         }
-
     }
-    if (empty($_GET['sign'])){
+    if (empty($_GET['sign']) && $withoutLogined[$action][$method]){
         echo json_encode(Base::returnActionResult($_GET,false,'账号异常，请重新登陆'),true);
     }
     $instance=new $action($_GET,$postData ?? '',$_GET['sign']);

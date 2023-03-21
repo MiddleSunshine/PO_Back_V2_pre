@@ -1,6 +1,6 @@
 <?php
 require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.WhiteBordQueue.php";
-require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR."class.Node.php";
+require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.Node.php";
 
 class WhiteBordController extends Base{
     public function GetWhiteBord(){
@@ -20,7 +20,6 @@ class WhiteBordController extends Base{
             $content=file_get_contents($whiteBordDir);
             $returnData['WhiteBordContent']=json_decode($content,1);
         }
-
         if (!empty($returnData['WhiteBordContent']['data']['nodes'])){
             $nodeInstance=new Node($loginUser);
             $nodeIds=[];

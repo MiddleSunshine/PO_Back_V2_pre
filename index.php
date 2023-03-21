@@ -16,7 +16,7 @@ try {
     if(!isset($withoutLogined[$action][$method])){
         // 并不是可以跳过登陆验证的路由
         $token=$_GET['sign'] ?? '';
-        if(Login::checkUserLogined($token)){
+        if(!LoginController::checkUserLogined($token)){
             // token 验证失败
             echo json_encode(Base::returnActionResult($_GET,false,'请先登陆',true));
             return false;

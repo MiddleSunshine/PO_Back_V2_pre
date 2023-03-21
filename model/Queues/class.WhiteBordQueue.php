@@ -46,7 +46,7 @@ class WhiteBordQueue extends QueueInstance {
             $nodes[]=$node['data'];
         }
         $nodeModels=$nodeInstance->updateNode($nodes);
-        foreach ($whiteBordData['data']['nodes'] as $index=>&$node){
+        foreach (($whiteBordData['data']['nodes'] ?? []) as $index=>&$node){
             /**
              * @var $nodeModel NodeModel
              */

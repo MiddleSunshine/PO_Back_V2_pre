@@ -38,7 +38,8 @@ class WhiteBordController extends Base{
                     $nData=file_get_contents($nodeItem['LocalFilePath']);
                     $nData=json_decode($nData,1);
                     if (isset($nodeIds[$nodeItem['ID']])){
-                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nData;
+                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nodeItem;
+                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['node_data']=$nData;
                     }
                 }
             }

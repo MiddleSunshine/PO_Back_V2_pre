@@ -73,6 +73,9 @@ class Queues{
 
     public function handleQueue($handlerId){
         $queuesDir=$this->processingQueueIndex.$handlerId.DIRECTORY_SEPARATOR;
+        if (!is_dir($queuesDir)){
+            return false;
+        }
         $queues=scandir($queuesDir);
         unset($queues[0]);
         unset($queues[1]);

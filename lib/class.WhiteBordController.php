@@ -36,6 +36,7 @@ class WhiteBordController extends Base{
                 // 拥有本地文件 && 数据库数据更新
                 if (!empty($nodeItem['LocalFilePath']) && $dataBaseLastUpdateTimestamp>$nodeIdsLastUpdateTime[$nodeItem['ID']]){
                     $nData=file_get_contents($nodeItem['LocalFilePath']);
+                    $nData=json_decode($nData,1);
                     if (isset($nodeIds[$nodeItem['ID']])){
                         $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nData;
                     }

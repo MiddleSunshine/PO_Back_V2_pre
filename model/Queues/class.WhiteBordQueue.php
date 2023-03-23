@@ -52,7 +52,7 @@ class WhiteBordQueue extends QueueInstance {
              */
             $nodeModel=$nodeModels[$index];
             $node['data']=$nodeModel->toArray();
-            file_put_contents($nodeModel->LocalFilePath,json_encode($node));
+            file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']));
         }
         file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
         return true;

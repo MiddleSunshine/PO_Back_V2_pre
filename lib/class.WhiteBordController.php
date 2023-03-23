@@ -68,9 +68,10 @@ class WhiteBordController extends Base{
         file_put_contents($whiteBordDir,json_encode($storeData));
         $whiteBord=new WhiteBord($loginUser);
         $whiteBordModel=$whiteBord->updateWhiteBord($id,[
+            'ID'=>$id,
             'LocalFilePath'=>$whiteBordDir,
             'Type'=>$isDraft?WhiteBordModel::TYPE_DRAFT:WhiteBordModel::TYPE_DATA
-        ]);
+        ],true);
         if (!$isDraft){
             $queue=new Queues();
             $whiteBordQueue=new WhiteBordQueue($whiteBordModel,$loginUser);

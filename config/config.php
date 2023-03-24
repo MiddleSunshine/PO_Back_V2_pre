@@ -4,7 +4,7 @@
 header("Access-Control-Allow-Origin: *");
 ini_set('date.timezone','Asia/Shanghai');
 define("PROD_DB_NAME","PO_V2");
-define("DEV_PROD_DB_NAME","PO_V2_Dev");
+define("DEV_PROD_DB_NAME","PO_V2_Pre");
 define("PROD_DB_HOST","127.0.0.1");
 define("PROD_DB_USER","debian-sys-maint");
 define("PROD_DB_PASS","tmXzyEBBwd1mbiBI");
@@ -13,11 +13,10 @@ define("DEBUG_MODE",true);
 define("MYSQL_SET_NAMES","utf8");
 //define('TIME_ZONE','Asia/Shanghai');
 define("INDEX_FILE",dirname(__DIR__));
-define("MD_FILE_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."md".DIRECTORY_SEPARATOR);
-define("BOOK_MARK_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."bookmarker".DIRECTORY_SEPARATOR);
-define("QUEUES_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."Queues".DIRECTORY_SEPARATOR);
-define("SummaryFilePath",INDEX_FILE.DIRECTORY_SEPARATOR."summary");
-define('LOGIN_USERS',INDEX_FILE.DIRECTORY_SEPARATOR."users".DIRECTORY_SEPARATOR);
+define("DATA_INDEX",INDEX_FILE.DIRECTORY_SEPARATOR."AllData".DIRECTORY_SEPARATOR);
+define("MD_FILE_INDEX",DATA_INDEX."md".DIRECTORY_SEPARATOR);
+define("QUEUES_INDEX",DATA_INDEX."Queues".DIRECTORY_SEPARATOR);
+define('LOGIN_USERS',DATA_INDEX."users".DIRECTORY_SEPARATOR);
 
 define("ES_SERVER","http://127.0.0.1:7700");
 define("AUTH_TOKEN",'h48hsihoshohsjijop803i0josnohog');
@@ -36,20 +35,24 @@ function __autoload2($class){
 
  spl_autoload_register("__autoload2");
 
-if(defined("BOOK_MARK_INDEX") && !is_dir(BOOK_MARK_INDEX)){
-    mkdir(BOOK_MARK_INDEX);
-}
 
+if (defined('DATA_INDEX') && !is_dir(DATA_INDEX)){
+    mkdir(DATA_INDEX);
+    chmod(DATA_INDEX,0777);
+}
 if (defined("QUEUES_INDEX") && !is_dir(QUEUES_INDEX)){
     mkdir(QUEUES_INDEX);
+    chmod(QUEUES_INDEX,0777);
 }
 
-if (MD_FILE_INDEX && !is_dir(MD_FILE_INDEX)){
+if (defined('MD_FILE_INDEX') && !is_dir(MD_FILE_INDEX)){
     mkdir(MD_FILE_INDEX);
+    chmod(QUEUES_INDEX,0777);
 }
 
 if(defined('LOGIN_USERS') && !is_dir(LOGIN_USERS)){
     mkdir(LOGIN_USERS);
+    chmod(QUEUES_INDEX,0777);
 }
 
 function debug($logFileName,$content){

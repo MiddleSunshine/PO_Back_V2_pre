@@ -27,12 +27,16 @@ class WhiteBordController extends Base{
             $nodeIds=[];
             $nodeIdsLastUpdateTime=[];
             foreach ($returnData['WhiteBordContent']['data']['nodes'] as $index=>$node){
-                if (!empty($node['data']['ID'])){
-                    $nodeIds[$node['data']['ID']]=$index;
-                    $nodeIdsLastUpdateTime[$node['data']['ID']]=strtotime($node['data']['LastUpdateTime']);
+                $data=$node['data']['data'];
+                if (!empty($data['ID'])){
+                    $nodeIds[$data['ID']]=$index;
+                    $nodeIdsLastUpdateTime[$data['ID']]=strtotime($data['LastUpdateTime']);
                 }
             }
-            $nodeData=$nodeInstance->searchNode('*',[sprintf("ID in (%s)",implode(',',$nodeIds))]);
+            $nodeData=[];
+            if (!empty($nodeData)){
+                $nodeData=$nodeInstance->searchNode('*',[sprintf("ID in (%s)",implode(',',array_keys($nodeIds)))]);
+            }
             foreach ($nodeData as $nodeItem){
                 $dataBaseLastUpdateTimestamp=strtotime($nodeItem['LastUpdateTime']);
                 // 拥有本地文件 && 数据库数据更新
@@ -40,8 +44,9 @@ class WhiteBordController extends Base{
                     $nData=file_get_contents($nodeItem['LocalFilePath']);
                     $nData=json_decode($nData,1);
                     if (isset($nodeIds[$nodeItem['ID']])){
-                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nodeItem;
-                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['node_data']=$nData;
+                        $index=$nodeIds[$nodeItem['ID']];
+                        $returnData['WhiteBordContent']['data']['nodes'][$index]['data']['data']=$nodeItem;
+                        $returnData['WhiteBordContent']['data']['nodes'][$index]['data']['node_data']=$nData;
                     }
                 }
             }

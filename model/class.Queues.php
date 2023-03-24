@@ -19,18 +19,22 @@ class Queues{
         $this->todoQueueIndex=QUEUES_INDEX."todo".DIRECTORY_SEPARATOR;
         if (!is_dir($this->todoQueueIndex)){
             mkdir($this->todoQueueIndex);
+            chmod($this->todoQueueIndex,0777);
         }
         $this->finishedQueueIndex=QUEUES_INDEX."finished".DIRECTORY_SEPARATOR;
         if (!is_dir($this->finishedQueueIndex)){
             mkdir($this->finishedQueueIndex);
+            chmod($this->finishedQueueIndex,0777);
         }
         $this->errorQueueIndex=QUEUES_INDEX."error".DIRECTORY_SEPARATOR;
         if (!is_dir($this->errorQueueIndex)){
             mkdir($this->errorQueueIndex);
+            chmod($this->errorQueueIndex,0777);
         }
         $this->processingQueueIndex=QUEUES_INDEX."processing".DIRECTORY_SEPARATOR;
         if (!is_dir($this->processingQueueIndex)){
             mkdir($this->processingQueueIndex);
+            chmod($this->processingQueueIndex,0777);
         }
     }
 

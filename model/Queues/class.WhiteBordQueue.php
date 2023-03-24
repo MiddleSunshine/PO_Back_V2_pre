@@ -43,18 +43,18 @@ class WhiteBordQueue extends QueueInstance {
         $nodeInstance=new Node($userModel);
         $nodes=[];
         foreach ($whiteBordData['data']['nodes'] as $node){
-            $nodes[]=$node['data'];
+            $nodes[]=$node['data']['data'];
         }
         $nodeModels=$nodeInstance->updateNode($nodes);
-        foreach (($whiteBordData['data']['nodes'] ?? []) as $index=>&$node){
+        foreach (($whiteBordData['data']['nodes'] ?? []) as $index=>$node){
             /**
              * @var $nodeModel NodeModel
              */
             $nodeModel=$nodeModels[$index];
             // 将数据写回进 whitebord.json 中
-            $node['data']=$nodeModel->toArray();
+            $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
             // 保存node中需要保存的数据
-            file_put_contents($nodeModel->LocalFilePath,json_encode($node['node_data'] ?? []));
+            file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
         }
         file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
         return true;

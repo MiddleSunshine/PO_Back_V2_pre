@@ -51,8 +51,10 @@ class WhiteBordQueue extends QueueInstance {
              * @var $nodeModel NodeModel
              */
             $nodeModel=$nodeModels[$index];
+            // 将数据写回进 whitebord.json 中
             $node['data']=$nodeModel->toArray();
-            file_put_contents($nodeModel->LocalFilePath,json_encode($node));
+            // 保存node中需要保存的数据
+            file_put_contents($nodeModel->LocalFilePath,json_encode($node['node_data'] ?? []));
         }
         file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
         return true;

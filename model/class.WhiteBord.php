@@ -17,10 +17,16 @@ class WhiteBord extends BaseUserModel{
         return $whiteBordModel;
     }
 
-    public function updateWhiteBord($ID,$data):WhiteBordModel
+    public function updateWhiteBord($ID,$data,$storeDataWhenExists=false):WhiteBordModel
     {
         $whiteBordModel=self::getModel();
-        $whiteBordModel->updateData(sprintf('ID=%d',$ID),$data);
+        $whiteBordModel->where([sprintf("ID=%d",$ID)]);
+        $whiteBordModel->getOneData();
+        if ($whiteBordModel->ID){
+            $whiteBordModel->updateData(sprintf('ID=%d',$ID),$data);
+        }else if ($storeDataWhenExists){
+            $whiteBordModel->insertOneData($data);
+        }
         return $whiteBordModel;
     }
 

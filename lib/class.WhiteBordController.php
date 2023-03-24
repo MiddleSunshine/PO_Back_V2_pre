@@ -38,8 +38,10 @@ class WhiteBordController extends Base{
                 // 拥有本地文件 && 数据库数据更新
                 if (!empty($nodeItem['LocalFilePath']) && $dataBaseLastUpdateTimestamp>$nodeIdsLastUpdateTime[$nodeItem['ID']]){
                     $nData=file_get_contents($nodeItem['LocalFilePath']);
+                    $nData=json_decode($nData,1);
                     if (isset($nodeIds[$nodeItem['ID']])){
-                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nData;
+                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['data']=$nodeItem;
+                        $returnData['WhiteBordContent']['data']['nodes'][$nodeIds[$nodeItem['ID']]]['node_data']=$nData;
                     }
                 }
             }
@@ -70,9 +72,10 @@ class WhiteBordController extends Base{
         file_put_contents($whiteBordDir,json_encode($storeData));
         $whiteBord=new WhiteBord($loginUser);
         $whiteBordModel=$whiteBord->updateWhiteBord($id,[
+            'ID'=>$id,
             'LocalFilePath'=>$whiteBordDir,
             'Type'=>$isDraft?WhiteBordModel::TYPE_DRAFT:WhiteBordModel::TYPE_DATA
-        ]);
+        ],true);
         if (!$isDraft){
             $queue=new Queues();
             $whiteBordQueue=new WhiteBordQueue($whiteBordModel,$loginUser);

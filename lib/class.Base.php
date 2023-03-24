@@ -20,7 +20,7 @@ class Base
             'Status' => $isSuccess ? 1 : 0,
             'Message' => $message,
             'Data' => $returnData,
-            'NeedLogin'=>$forceLogin
+            'NeedLogin'=>$forceLogin?1:0
         ];
     }
 

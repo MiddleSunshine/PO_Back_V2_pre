@@ -29,7 +29,7 @@ class GlobalSearch{
             return [];
         }
         $localFilePaths=sprintf('"%s"',implode('","',$localFilePaths));
-        $nodesData=$nodeInstance->searchNode('ID',[sprintf('LocalFilePath in (%s)',$localFilePaths)]);
+        $nodesData=$nodeInstance->searchNode('*',[sprintf('LocalFilePath in (%s)',$localFilePaths)]);
         foreach ($nodesData as $nodeItem){
             $returnData[]=$nodeInstance->getNodeModel($nodeItem);
         }

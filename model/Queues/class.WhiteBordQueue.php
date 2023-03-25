@@ -43,6 +43,7 @@ class WhiteBordQueue extends QueueInstance {
         $nodeInstance=new Node($userModel);
         $nodes=[];
         foreach ($whiteBordData['data']['nodes'] as $node){
+            $node['data']['data']['Type']=$node['type'];
             if (!($node['data']['save_into_database'] ?? true)){
                 continue;
             }

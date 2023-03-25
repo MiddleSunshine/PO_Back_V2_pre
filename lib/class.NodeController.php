@@ -16,6 +16,12 @@ class NodeController extends Base{
              */
             $returnData[$nodeModel->ID]=[
                 'keywords'=>file_get_contents($nodeModel->LocalFilePath),
+                'node'=>[
+                    'data'=>[
+                        'data'=>$nodeModel->toArray(),
+                        'node_data'=>json_decode(file_get_contents($nodeModel->LocalFilePath),1)
+                    ]
+                ],
                 'Whiteboards'=>[]
             ];
             $connection=new WhiteBordNodeConnection($loginUser);

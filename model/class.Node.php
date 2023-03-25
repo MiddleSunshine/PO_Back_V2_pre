@@ -6,13 +6,13 @@ class Node extends BaseUserModel{
 
     public function getNodeModel($data){
         $node=new NodeModel($data);
-        $node->setTable(static::$tableName);
+        $node->setTable($this->getModalTableName());
         return $node;
     }
 
     public function searchNode($fields,array $where):array
     {
-        $model=self::getModel();
+        $model=$this->getModel();
         $model->select($fields);
         $model->where($where);
         return $model->getAllData();
@@ -22,7 +22,7 @@ class Node extends BaseUserModel{
         $nodeIds=[];
         foreach ($nodes as $index=>$node){
             $nodeModel=new NodeModel();
-            $nodeModel->setTable(static::$tableName);
+            $nodeModel->setTable($this->getModalTableName());
             if (!empty($node['ID'])){
                 // update
                 $nodeModel->where([sprintf('ID=%d',$node['ID'])]);
@@ -38,10 +38,10 @@ class Node extends BaseUserModel{
         return $nodeIds;
     }
 
-    public static function getModel(): NodeModel
+    public function getModel(): NodeModel
     {
         $mode=new NodeModel();
-        $mode->setTable(static::$tableName);
+        $mode->setTable($this->getModalTableName());
         return $mode;
     }
 

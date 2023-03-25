@@ -4,22 +4,22 @@ require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR
 class WhiteBordNodeConnection extends BaseUserModel {
 
     public function updateConnection($whiteBordId,$nodes){
-        (self::getModel())->updateWhiteNodeConnection($whiteBordId,$nodes);
+        ($this->getModel())->updateWhiteNodeConnection($whiteBordId,$nodes);
         return true;
     }
 
     public function getAllWhiteBord($nodeId){
-        $model=self::getModel();
+        $model=$this->getModel();
         return $model->getAllWhiteBoards($nodeId);
     }
 
     public function getAllConnection($whiteBordId){
-        return (self::getModel())->getAllConnection($whiteBordId);
+        return ($this->getModel())->getAllConnection($whiteBordId);
     }
-    public static function getModel():WhiteBordNodeConnectionModel
+    public function getModel():WhiteBordNodeConnectionModel
     {
         $mode=new WhiteBordNodeConnectionModel();
-        $mode->setTable(static::$tableName);
+        $mode->setTable($this->getModalTableName());
         return $mode;
     }
     protected static function getTableName(): string

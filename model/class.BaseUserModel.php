@@ -2,28 +2,31 @@
 
 abstract class BaseUserModel{
     protected $userModel;
-    protected static $tableName;
-    protected $dataBaseModel;
+    private $dataBaseModel;
     public function __construct(UsersModel $usersModel)
     {
         $this->userModel=$usersModel;
         if (empty($this->userModel->ID)){
             return false;
         }
-        static::$tableName=static::getTableName()."_".$this->userModel->ID;
+        // 构建制定的表
         $this->dataBaseModel=new BaseModel();
-        $this->dataBaseModel->setTable(static::$tableName);
-        if (!$this->dataBaseModel->checkTableExists(static::$tableName)){
+        $this->dataBaseModel->setTable($this->getModalTableName());
+        if (!$this->dataBaseModel->checkTableExists($this->getModalTableName())){
             $this->dataBaseModel->pdo->query($this->createTableSql());
         }
     }
 
-    public function createTableSql():string
-    {
-        return sprintf("create table %s %s;",static::$tableName,static::getTableTemplate());
+    public function getModalTableName(){
+        return $this->getModalTableName()."_".$this->userModel->ID;
     }
 
-    abstract protected static function getModel():BaseModel;
+    public function createTableSql():string
+    {
+        return sprintf("create table %s %s;",$this->getModalTableName(),static::getTableTemplate());
+    }
+
+    abstract protected function getModel():BaseModel;
     abstract protected static function getTableName():string;
     abstract protected static function getTableTemplate():string;
 }

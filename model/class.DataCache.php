@@ -4,10 +4,10 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR."vendor".DIRECTORY_SEPARATOR."
 use OSS\OssClient;
 class DataCache{
 
-    const ACCESS_KEY_ID = 'LTAI5t5wQ415i8qz4sbC9bqj';
-    const ACCESS_KEY_SECRET = 'RXpqlgjsw5MAHfyccEhGGUY9QuMuk7';
+    const ACCESS_KEY_ID = '';
+    const ACCESS_KEY_SECRET = '';
     const END_POINT = 'oss-cn-shanghai.aliyuncs.com';
-    const LONG_STORE_BUCKET = 'oss-file-cache';
+    const LONG_STORE_BUCKET = '';
 // 建议短期存储时使用
     protected $oss;
 

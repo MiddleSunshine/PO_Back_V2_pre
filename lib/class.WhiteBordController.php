@@ -34,7 +34,7 @@ class WhiteBordController extends Base{
                 }
             }
             $nodeData=[];
-            if (!empty($nodeData)){
+            if (!empty($nodeIds)){
                 $nodeData=$nodeInstance->searchNode('*',[sprintf("ID in (%s)",implode(',',array_keys($nodeIds)))]);
             }
             foreach ($nodeData as $nodeItem){

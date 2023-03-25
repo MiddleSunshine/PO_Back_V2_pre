@@ -13,6 +13,7 @@ class DataCache{
 
     public function uploadFile($uploadFilePath,$storeFileName)
     {
+        $this->oss=new OssClient(self::ACCESS_KEY_ID,self::ACCESS_KEY_SECRET,self::END_POINT);
         return $this->oss->uploadFile(
             self::LONG_STORE_BUCKET,
             $storeFileName,

@@ -48,17 +48,25 @@ class WhiteBordQueue extends QueueInstance {
             }
             $nodes[]=$node['data']['data'];
         }
+        // 更新 node 信息
         $nodeModels=$nodeInstance->updateNode($nodes);
+        $nodeIds=[];
         foreach (($whiteBordData['data']['nodes'] ?? []) as $index=>$node){
             /**
              * @var $nodeModel NodeModel
              */
-            $nodeModel=$nodeModels[$index];
-            // 将数据写回进 whitebord.json 中
-            $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
-            // 保存node中需要保存的数据
-            file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
+            $nodeModel=$nodeModels[$index] ?? false;
+            if (!empty($nodeModel->ID)){
+                $nodeIds[$nodeModel->ID]='';
+                // 将数据写回进 whitebord.json 中
+                $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
+                // 保存node中需要保存的数据
+                file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
+            }
         }
+        // 更新 WhiteBord 和 Node 之间的对应关系
+        $whiteBordNodeConnection=new WhiteBordNodeConnection($userModel);
+        $whiteBordNodeConnection->updateConnection($queueStoreData['ID'],$nodeIds);
         file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
         return true;
     }

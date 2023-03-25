@@ -9,22 +9,24 @@ class NodeController extends Base{
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);
         $search=new GlobalSearch($loginUser);
         $nodeModels=$search->searchNote($keyword);
-        $returnData=[];
+        $connection=new WhiteBordNodeConnection($loginUser);
+        $whiteBordIds=[];
         foreach ($nodeModels as $nodeModel){
             /**
              * @var $nodeModel NodeModel
              */
-            if (!empty($nodeModel->LocalFilePath)){
-                $returnData[]=[
-                    'data'=>$nodeModel->toArray(),
-                    'node_data'=>file_get_contents($nodeModel->LocalFilePath)
-                ];
-            }
+            $whiteBordIds=array_merge(
+                $whiteBordIds,
+                $connection->getAllWhiteBord($nodeModel->ID)
+            );
+        }
+        $returnData=[];
+        if (!empty($whiteBordIds)){
+            $whiteBordIds=array_unique($whiteBordIds);
+
         }
         return self::returnActionResult(
-            [
-                'nodes'=>$returnData
-            ]
+
         );
     }
 }

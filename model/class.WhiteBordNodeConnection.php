@@ -8,6 +8,11 @@ class WhiteBordNodeConnection extends BaseUserModel {
         return true;
     }
 
+    public function getAllWhiteBord($nodeId){
+        $model=self::getModel();
+        return $model->getAllWhiteBoards($nodeId);
+    }
+
     public function getAllConnection($whiteBordId){
         return (self::getModel())->getAllConnection($whiteBordId);
     }

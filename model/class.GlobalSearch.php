@@ -31,7 +31,8 @@ class GlobalSearch{
         $localFilePaths=sprintf('"%s"',implode('","',$localFilePaths));
         $nodesData=$nodeInstance->searchNode('*',[sprintf('LocalFilePath in (%s)',$localFilePaths)]);
         foreach ($nodesData as $nodeItem){
-            $returnData[]=$nodeInstance->getNodeModel($nodeItem);
+            $instance=$nodeInstance->getNodeModel($nodeItem);
+            $returnData[$instance->ID]=$instance;
         }
         return $returnData;
     }

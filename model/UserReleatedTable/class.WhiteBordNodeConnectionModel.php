@@ -2,6 +2,16 @@
 
 class WhiteBordNodeConnectionModel extends BaseModel{
 
+    public function getAllWhiteBoards($nodeId):array
+    {
+        if (empty($nodeId)){
+            return [];
+        }
+        $this->where(['N_ID='.$nodeId]);
+        $this->select("distinct W_ID");
+        $returnData=$this->getAllData();
+        return array_column($returnData,'W_ID');
+    }
     public function getAllConnection($whiteBordId):array
     {
         $sql=sprintf("select N_ID from %s where W_ID=%d;",static::$table,$whiteBordId);

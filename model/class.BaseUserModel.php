@@ -18,7 +18,7 @@ abstract class BaseUserModel{
     }
 
     public function getModalTableName(){
-        return $this->getModalTableName()."_".$this->userModel->ID;
+        return static::getTableName()."_".$this->userModel->ID;
     }
 
     public function createTableSql():string

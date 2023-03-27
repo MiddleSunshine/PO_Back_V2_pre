@@ -10,6 +10,7 @@ class WhiteBordController extends Base{
         $whiteBordModel=$whiteBordInstance->seleteWhiteBord('*',[sprintf('ID=%d',$id)]);
         $whiteBordDir=$whiteBordModel->LocalFilePath;
         $returnData=[
+            'WhiteBoard'=>$whiteBordModel->toArray(),
             'WhiteBordContent'=>[
                 'data'=>[
                     'nodes'=>[],

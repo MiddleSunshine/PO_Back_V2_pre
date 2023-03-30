@@ -22,8 +22,9 @@ class WhiteBordModel extends BaseModel{
         return parent::insertOneData($data);
     }
 
-    public function updateData($where, $data)
+    public function updateData(string $where,array $data)
     {
+        unset($data['ID']);
         $data['LastUpdateTime']=date("Y-m-d H:i:s");
         return parent::updateData($where, $data);
     }

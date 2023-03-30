@@ -24,20 +24,6 @@ class Node extends BaseUserModel{
             $nodeModel=new NodeModel();
             $nodeModel->setTable($this->getModalTableName());
             if (!empty($node['ID'])){
-                switch ($node['Type']){
-                    // 一些情况下需要同步其他数据
-                    case 'WhiteBoardNode':
-                        if (!empty($node['LocalFilePath'])){
-                            $data=file_get_contents($node['LocalFilePath']);
-                            if (!empty($data)){
-                                // todo 这里接着写
-                                $nodeData=json_decode($data,1);
-                            }
-                        }
-                        break;
-                    case 'DirectoryNode':
-                        break;
-                }
                 // update
                 $nodeModel->where([sprintf('ID=%d',$node['ID'])]);
                 $nodeModel->getOneInstance();

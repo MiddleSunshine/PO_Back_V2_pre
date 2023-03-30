@@ -64,7 +64,7 @@ class WhiteBordController extends Base{
         $whiteBordModel=$whiteBord->addWhiteBord($title,$type);
         return self::returnActionResult(
             [
-                'ID'=>$whiteBordModel->ID
+                'data'=>$whiteBordModel->toArray()
             ]
         );
     }

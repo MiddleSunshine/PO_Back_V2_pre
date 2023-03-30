@@ -129,7 +129,7 @@ class BaseModel{
         return true;
     }
 
-    public function updateData($where,$data){
+    public function updateData(string $where,array $data){
         $sql=[];
         foreach($data as $field=>$newValue){
             if(empty($field)){

@@ -47,6 +47,11 @@ class WhiteBordQueue extends QueueInstance {
             if (!($node['data']['save_into_database'] ?? true)){
                 continue;
             }
+            switch ($node['type']){
+                case 'WhiteBoardNode':
+                    $node['data']['data']['Name']=$node['data']['node_data']['Title'];
+                    break;
+            }
             $nodes[]=$node['data']['data'];
         }
         // 更新 node 信息
@@ -61,6 +66,15 @@ class WhiteBordQueue extends QueueInstance {
                 $nodeIds[$nodeModel->ID]='';
                 // 将数据写回进 whitebord.json 中
                 $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
+                switch ($nodeModel->Type){
+                    case 'WhiteBoardNode':
+                        $data=$node['data']['node_data'];
+                        $whiteBord=new WhiteBord($userModel);
+                        $whiteBordModel=$whiteBord->getModel();
+                        $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
+                        $node['data']['node_data']=$whiteBordModel->toArray();
+                        break;
+                }
                 // 保存node中需要保存的数据
                 file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
             }

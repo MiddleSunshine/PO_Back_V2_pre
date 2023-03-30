@@ -26,7 +26,7 @@ class GlobalSearch{
             $localFilePaths[]=$localFilePath;
         }
         if (empty($localFilePaths)){
-            return [];
+            return $returnData;
         }
         $localFilePaths=sprintf('"%s"',implode('","',$localFilePaths));
         $nodesData=$nodeInstance->searchNode('*',[sprintf('LocalFilePath in (%s)',$localFilePaths)]);
@@ -35,5 +35,34 @@ class GlobalSearch{
             $returnData[$instance->ID]=$instance;
         }
         return $returnData;
+    }
+
+    public function searchWhiteBoard($keywords,$isDraft=false):array
+    {
+        $returnData=[];
+        $tempFileHandler=tmpfile();
+        $tempFileInfo=stream_get_meta_data($tempFileHandler);
+        $cmd=sprintf("grep '%s' %s*",$keywords,WhiteBordFileManager::getWhiteBordFileDir('',$this->usersModel->ID,$isDraft));
+        $cmd=sprintf("%s > %s",$cmd,$tempFileInfo['uri']);
+        exec($cmd);
+        $searchResult=file_get_contents($tempFileInfo['uri']);
+        $localFilePaths=[];
+        foreach (explode(PHP_EOL,$searchResult) as $item){
+            $item=trim($item);
+            if (empty($item)){
+                continue;
+            }
+            list($localFilePath,$searchData)=explode(':',$item);
+            $localFilePaths[]=$localFilePath;
+        }
+        if (empty($localFilePaths)){
+            return $returnData;
+        }
+        $localFilePaths=sprintf('"%s"',implode('","',$localFilePaths));
+        $whiteBord=new WhiteBord($this->usersModel);
+        $whiteBordModel=$whiteBord->getModel();
+        $whiteBordModel->select("*");
+        $whiteBordModel->where([sprintf('LocalFilePath in (%s)',$localFilePaths)]);
+        return $whiteBordModel->getAllData();
     }
 }

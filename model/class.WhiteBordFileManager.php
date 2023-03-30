@@ -45,6 +45,9 @@ class WhiteBordFileManager {
         if (!is_dir($userDir)){
             mkdir($userDir);
         }
+        if (empty($id)){
+            return $userDir;
+        }
         return $userDir.$id.".json";
     }
 }

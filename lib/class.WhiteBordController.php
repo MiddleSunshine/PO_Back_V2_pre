@@ -3,6 +3,20 @@ require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."Queues"
 require_once INDEX_FILE.DIRECTORY_SEPARATOR."model".DIRECTORY_SEPARATOR."class.Node.php";
 
 class WhiteBordController extends Base{
+    public function SearchWhiteBoard(){
+        $keyword=$this->post['Keywords'] ?? '';
+        $isDraft=($this->post['Type'] ?? WhiteBordModel::TYPE_DATA);
+        if (empty($keyword)){
+            return self::returnActionResult($this->post,false,"Please input the keywords");
+        }
+        $search=new GlobalSearch(LoginUser::getLoginUser($this->loginUserToken));
+        return self::returnActionResult(
+            [
+                'WhiteBoards'=>$search->searchWhiteBoard($keyword,$isDraft)
+            ]
+        );
+    }
+
     public function GetWhiteBord(){
         $id=$this->get['ID'] ?? '0';
         $loginUser=LoginUser::getLoginUser($this->loginUserToken);

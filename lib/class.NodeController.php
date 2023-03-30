@@ -68,10 +68,14 @@ class NodeController extends Base{
         $search=new GlobalSearch($loginUser);
         $nodeModels=$search->searchNote($keyword);
         $returnData=[];
-        foreach ($nodeModels as $nodeModel){
+        $filterType=$this->post['type'] ?? '';
+        foreach ($nodeModels as $nodeModel){        
             /**
              * @var $nodeModel NodeModel
              */
+            if (!empty($filterType) && $nodeModel->Type!=$filterType) {
+                continue;
+            }
             $returnData[$nodeModel->ID]=[
                 'keywords'=>file_get_contents($nodeModel->LocalFilePath),
                 'node'=>[

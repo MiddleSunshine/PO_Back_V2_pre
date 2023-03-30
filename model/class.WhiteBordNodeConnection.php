@@ -35,7 +35,7 @@ class WhiteBordNodeConnection extends BaseUserModel {
   `N_ID` int NOT NULL,
   `Label` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`W_ID`,`N_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB
 EOD;
     }
 }

@@ -66,6 +66,7 @@ class WhiteBordQueue extends QueueInstance {
                 $nodeIds[$nodeModel->ID]='';
                 // 将数据写回进 whitebord.json 中
                 $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
+                $saveNodeData=true;
                 switch ($nodeModel->Type){
                     case 'WhiteBoardNode':
                         $data=$node['data']['node_data'];
@@ -74,9 +75,12 @@ class WhiteBordQueue extends QueueInstance {
                         $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
                         $node['data']['node_data']=$whiteBordModel->toArray();
                         break;
+                    case 'DrawNode':
+                        $saveNodeData=false;
+                        break;
                 }
                 // 保存node中需要保存的数据
-                file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
+                $saveNodeData && file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
             }
         }
         // 更新 WhiteBord 和 Node 之间的对应关系

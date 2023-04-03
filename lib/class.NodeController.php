@@ -22,7 +22,7 @@ class NodeController extends Base{
     public function UpdateNode(){
         $nodeData=$this->post['node_data'] ?? [];
         $data=$this->post['data'] ?? [];
-        $data=json_decode($data,1);
+        is_string($data) && $data=json_decode($data,1);
         if (empty($data['ID'])){
             return self::returnActionResult($this->post,false,'Data Error');
         }
@@ -33,8 +33,10 @@ class NodeController extends Base{
         $nodeModel->where([sprintf("ID=%d;",$data['ID'])]);
         $nodeModel->getOneData();
         if ($nodeModel->updateNode($data) && !empty($nodeModel->LocalFilePath)){
+            is_array($nodeData) && $nodeData=json_encode($nodeData);
             file_put_contents($nodeModel->LocalFilePath,$nodeData);
         }
+        return self::returnActionResult([],true);
     }
 
     public function CreateNode(){

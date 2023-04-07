@@ -18,10 +18,12 @@ class WhiteBordFileManager {
         $dir=static::getStoreFileDir().$user_id.DIRECTORY_SEPARATOR;
         if (!is_dir($dir)){
             mkdir($dir);
+            chmod($dir,0777);
         }
         $dir.="Node".DIRECTORY_SEPARATOR;
         if (!is_dir($dir)){
             mkdir($dir);
+            chmod($dir,0777);
         }
         if (empty($nodeId)){
             return $dir;
@@ -40,10 +42,12 @@ class WhiteBordFileManager {
         $userDir=self::getStoreFileDir().$user_id.DIRECTORY_SEPARATOR;
         if (!is_dir($userDir)){
             mkdir($userDir);
+            chmod($userDir,0777);
         }
         $userDir.=($isDraft?'Draft':'WhiteBord').DIRECTORY_SEPARATOR;
         if (!is_dir($userDir)){
             mkdir($userDir);
+            chmod($userDir,0777);
         }
         if (empty($id)){
             return $userDir;

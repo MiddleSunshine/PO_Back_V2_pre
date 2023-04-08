@@ -5,6 +5,9 @@ $withoutLogined=[
     'LoginController'=>[
         'CheckLogin'=>1,// 需要验证 sign
         'Login'=>0 // 不需要验证 sign
+    ],
+    'IndexController'=>[
+        'Index'=>0
     ]
 ];
 

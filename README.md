@@ -19,6 +19,16 @@ create unique index login
     on Users (Name, Password);
 ```
 
+```sql
+create table Settings
+(
+    ID    int auto_increment
+        primary key,
+    Name  varchar(100)  null,
+    Value varchar(1000) null
+);
+```
+
 # API
 
 ## WhiteBord

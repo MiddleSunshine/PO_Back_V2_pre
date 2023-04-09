@@ -42,13 +42,23 @@ class Queues{
         $files=scandir($this->todoQueueIndex);
         unset($files[0]);
         unset($files[1]);
+        if (empty($files)){
+            return true;
+        }
         $newQueuePath=$this->processingQueueIndex.$handlerId.DIRECTORY_SEPARATOR;
         if (!is_dir($newQueuePath)){
             mkdir($newQueuePath);
+            chmod($newQueuePath,0777);
         }
         $queueFilePath='';
         foreach ($files as $file){
+            if (!file_exists($this->todoQueueIndex.$file)){
+                continue;
+            }
             $fd=fopen($this->todoQueueIndex.$file,'r+');
+            if (!$fd){
+                continue;
+            }
             // 如果能获取到文件锁
             if (flock($fd,LOCK_EX)){
                 // 将队列移动到指定的目录下，交给其他进程处理

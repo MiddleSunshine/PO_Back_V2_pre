@@ -14,8 +14,11 @@ abstract class BaseUserModel{
         $this->dataBaseModel->setTable($this->getModalTableName());
         if (!$this->dataBaseModel->checkTableExists($this->getModalTableName())){
             $this->dataBaseModel->pdo->query($this->createTableSql());
+            $this->afterCreateTable();
         }
     }
+
+    public function afterCreateTable(){}
 
     public function getModalTableName(){
         return static::getTableName()."_".$this->userModel->ID;

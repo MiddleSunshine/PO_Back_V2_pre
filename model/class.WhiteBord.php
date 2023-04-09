@@ -3,6 +3,11 @@ require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR
 
 class WhiteBord extends BaseUserModel{
 
+    public function afterCreateTable()
+    {
+        $this->addWhiteBord("Index");
+    }
+
     public function addWhiteBord($title,$type=WhiteBordModel::TYPE_DRAFT):WhiteBordModel{
         $whiteBordModel=$this->getModel();
         $whiteBordModel->insertOneData(

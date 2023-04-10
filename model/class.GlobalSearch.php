@@ -11,7 +11,7 @@ class GlobalSearch{
         $returnData=[];
         $tempFileHandler=tmpfile();
         $tempFileInfo=stream_get_meta_data($tempFileHandler);
-        $cmd=sprintf("grep '%s' %s*",$keywords,WhiteBordFileManager::getNodeFileDir($this->usersModel->ID));
+        $cmd=sprintf("grep '%s' -li %s*",$keywords,WhiteBordFileManager::getNodeFileDir($this->usersModel->ID));
         $cmd=sprintf("%s > %s",$cmd,$tempFileInfo['uri']);
         exec($cmd);
         $searchResult=file_get_contents($tempFileInfo['uri']);
@@ -42,27 +42,29 @@ class GlobalSearch{
         $returnData=[];
         $tempFileHandler=tmpfile();
         $tempFileInfo=stream_get_meta_data($tempFileHandler);
-        $cmd=sprintf("grep '%s' %s*",$keywords,WhiteBordFileManager::getWhiteBordFileDir('',$this->usersModel->ID,$isDraft));
+        $cmd=sprintf("grep '%s' -li %s*",$keywords,WhiteBordFileManager::getWhiteBordFileDir('',$this->usersModel->ID,$isDraft));
         $cmd=sprintf("%s > %s",$cmd,$tempFileInfo['uri']);
         exec($cmd);
         $searchResult=file_get_contents($tempFileInfo['uri']);
-        $localFilePaths=[];
+        $IDs=[];
         foreach (explode(PHP_EOL,$searchResult) as $item){
             $item=trim($item);
             if (empty($item)){
                 continue;
             }
-            list($localFilePath,$searchData)=explode(':',$item);
-            $localFilePaths[]=$localFilePath;
+            $filesEachPart=explode(DIRECTORY_SEPARATOR,$item);
+            list($ID)=explode(".",end($filesEachPart));
+            if (!empty($ID)){
+                $IDs[]=$ID;
+            }
         }
-        if (empty($localFilePaths)){
+        if (empty($IDs)){
             return $returnData;
         }
-        $localFilePaths=sprintf('"%s"',implode('","',$localFilePaths));
         $whiteBord=new WhiteBord($this->usersModel);
         $whiteBordModel=$whiteBord->getModel();
         $whiteBordModel->select("*");
-        $whiteBordModel->where([sprintf('LocalFilePath in (%s)',$localFilePaths)]);
+        $whiteBordModel->where([sprintf('ID in (%s)',implode(",",$IDs))]);
         return $whiteBordModel->getAllData();
     }
 }

@@ -41,6 +41,10 @@ class NodeController extends Base{
 
     public function CreateNode(){
         $type=$this->post['data']['Type'] ?? '';
+        $node_id=$this->post['data']['node_id'] ?? '';
+        if (empty($node_id)){
+            return  self::returnActionResult($this->post,false,'Data Error');
+        }
         if (empty($type)){
             return self::returnActionResult($this->post,false,'Data Error');
         }
@@ -52,7 +56,8 @@ class NodeController extends Base{
             'Name'=>$this->post['data']['Name'] ?? '',
             'AddTime'=>date("Y-m-d H:i:s"),
             'LastUpdateTime'=>date("Y-m-d H:i:s"),
-            'LocalFilePath'=>WhiteBordFileManager::getNodeFileDir($loginUser->ID,time())
+            'LocalFilePath'=>WhiteBordFileManager::getNodeFileDir($loginUser->ID,time()),
+            'node_id'=>addslashes($node_id)
         ]);
         $node_data=$this->post['node_data'] ?? '[]';
         $nodeModel->getLastestData();

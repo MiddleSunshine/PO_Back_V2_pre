@@ -47,12 +47,12 @@ if (defined("QUEUES_INDEX") && !is_dir(QUEUES_INDEX)){
 
 if (defined('MD_FILE_INDEX') && !is_dir(MD_FILE_INDEX)){
     mkdir(MD_FILE_INDEX);
-    chmod(QUEUES_INDEX,0777);
+    chmod(MD_FILE_INDEX,0777);
 }
 
 if(defined('LOGIN_USERS') && !is_dir(LOGIN_USERS)){
     mkdir(LOGIN_USERS);
-    chmod(QUEUES_INDEX,0777);
+    chmod(LOGIN_USERS,0777);
 }
 
 function debug($logFileName,$content){

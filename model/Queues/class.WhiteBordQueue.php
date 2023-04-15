@@ -47,11 +47,11 @@ class WhiteBordQueue extends QueueInstance {
             if (!($node['data']['save_into_database'] ?? true)){
                 continue;
             }
-            switch ($node['type']){
-                case 'WhiteBoardNode':
-                    $node['data']['data']['Name']=$node['data']['node_data']['Title'];
-                    break;
-            }
+//            switch ($node['type']){
+//                case 'WhiteBoardNode':
+//                    $node['data']['data']['Name']=$node['data']['node_data']['Title'];
+//                    break;
+//            }
             $nodes[]=$node['data']['data'];
         }
         // 更新 node 信息
@@ -68,15 +68,15 @@ class WhiteBordQueue extends QueueInstance {
                 $whiteBordData['data']['nodes'][$index]['data']['data']=$nodeModel->toArray();
                 $saveNodeData=true;
                 switch ($nodeModel->Type){
-                    case 'WhiteBoardNode':
-                        $data=$node['data']['node_data'];
-                        $whiteBord=new WhiteBord($userModel);
-                        $whiteBordModel=$whiteBord->getModel();
-                        if (!empty($data['ID'])){
-                            $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
-                            $node['data']['node_data']=$whiteBordModel->toArray();
-                        }
-                        break;
+//                    case 'WhiteBoardNode':
+//                        $data=$node['data']['node_data'];
+//                        $whiteBord=new WhiteBord($userModel);
+//                        $whiteBordModel=$whiteBord->getModel();
+//                        if (!empty($data['ID'])){
+//                            $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
+//                            $node['data']['node_data']=$whiteBordModel->toArray();
+//                        }
+//                        break;
                     case 'DrawNode':
                         $saveNodeData=false;
                         break;

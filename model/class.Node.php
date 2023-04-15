@@ -29,9 +29,21 @@ class Node extends BaseUserModel{
                 $nodeModel->getOneInstance();
                 $nodeModel->updateNode($node);
             }else{
-                // insert
-                $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time()."_".$index);
-                $nodeModel->newNode($node);
+                // 搜索 node_id
+                $nodeModel->where([sprintf('node_id="%s"',$node['node_id'])]);
+                $nodeModel->getOneData();
+                if (!empty($nodeModel->ID)){
+                    // update
+                    $nodeModel->where([sprintf('ID=%d',$nodeModel->ID)]);
+                    $nodeModel->updateNode(array_merge(
+                        $node,
+                        $nodeModel->data
+                    ));
+                }else{
+                    // insert
+                    $node['LocalFilePath']=WhiteBordFileManager::getNodeFileDir($this->userModel->ID,time()."_".$index);
+                    $nodeModel->newNode($node);
+                }
             }
             $nodeIds[$index]=$nodeModel;
         }
@@ -60,11 +72,9 @@ class Node extends BaseUserModel{
     LastUpdateTime datetime     null,
     LocalFilePath  varchar(500) null,
     Name           varchar(500) null,
-    Type           varchar(100) null
+    Type           varchar(100) null,
+    node_id        varchar(500) null
 );
-create index search
-    on Node_1 (Name);
 EOD;
-
     }
 }

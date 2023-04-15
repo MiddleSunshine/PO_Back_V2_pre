@@ -72,8 +72,10 @@ class WhiteBordQueue extends QueueInstance {
                         $data=$node['data']['node_data'];
                         $whiteBord=new WhiteBord($userModel);
                         $whiteBordModel=$whiteBord->getModel();
-                        $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
-                        $node['data']['node_data']=$whiteBordModel->toArray();
+                        if (!empty($data['ID'])){
+                            $whiteBordModel->updateData(sprintf("ID=%d",$data['ID']),$data);
+                            $node['data']['node_data']=$whiteBordModel->toArray();
+                        }
                         break;
                     case 'DrawNode':
                         $saveNodeData=false;

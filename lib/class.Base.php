@@ -1,38 +1,27 @@
 <?php
-require_once __DIR__ . DIRECTORY_SEPARATOR . "class.MysqlPdo.php";
 
 class Base
 {
-    public static $table = '';
     protected $get;
     protected $post;
-    public $pdo;
-    protected $authToken;
-    protected $authCheck = false;
-    protected $doNotCheckLogin=false;
 
-    public function __construct($get = [], $post = '')
+    protected $loginUserToken;
+
+    public function __construct($get = [], $post = [],$token='')
     {
         $this->get = $get;
         $this->post = $post;
-        $this->em_getallheaders();
-        $this->pdo = new MysqlPdo();
+        $this->loginUserToken=$token;
     }
 
-    public static function returnActionResult($returnData = [], $isSuccess = true, $message = '')
+    public static function returnActionResult($returnData = [], $isSuccess = true, $message = '',$forceLogin=false)
     {
         return [
             'Status' => $isSuccess ? 1 : 0,
             'Message' => $message,
-            'Data' => $returnData
+            'Data' => $returnData,
+            'NeedLogin'=>$forceLogin?1:0
         ];
-    }
-
-    public function getTableField($table = '')
-    {
-        $sql = "desc " . ($table ?: static::$table);
-        $columns = $this->pdo->getRows($sql);
-        return array_column($columns, 'Field');
     }
 
     public static function getDateRange($startTime, $endTime, $dateFormat)
@@ -46,14 +35,6 @@ class Base
             $startTime += $oneDay;
         }
         return $returnData;
-    }
-
-    public function em_getallheaders()
-    {
-        $this->authToken = $this->get['sign'] ?? '';
-        if (empty($this->authToken) && defined('Login_Token')){
-            $this->authToken=Login_Token;
-        }
     }
 
     public static function getLocalDateN($timestamp){

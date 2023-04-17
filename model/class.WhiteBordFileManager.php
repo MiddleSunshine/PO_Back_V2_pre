@@ -34,6 +34,10 @@ class WhiteBordFileManager {
             $endLessPrevent++;
             $filePath=$dir.$nodeId."_".rand(0,1000).".json";
         }
+        if (!file_exists($filePath)){
+            touch($filePath);
+            chmod($filePath, 0777);
+        }
         return $filePath;
     }
 
@@ -52,6 +56,11 @@ class WhiteBordFileManager {
         if (empty($id)){
             return $userDir;
         }
-        return $userDir.$id.".json";
+        $filePath=$userDir.$id.".json";
+        if (!file_exists($filePath)){
+            touch($filePath);
+            chmod($filePath,0777);
+        }
+        return $filePath;
     }
 }

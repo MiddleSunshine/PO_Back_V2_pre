@@ -10,11 +10,12 @@ class NodeController extends Base{
         $nodeModel->where([sprintf("ID=%d",$ID)]);
         $nodeModel->getOneData();
         $returnData=[
-            'node_data'=>'',
+            'node_data'=>'[]',
             'data'=>$nodeModel->toArray()
         ];
         if (!empty($nodeModel->LocalFilePath)){
             $returnData['node_data']=file_get_contents($nodeModel->LocalFilePath);
+            empty($returnData['node_data']) && $returnData['node_data']='[]';
         }
         return self::returnActionResult($returnData);
     }

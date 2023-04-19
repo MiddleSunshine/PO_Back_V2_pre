@@ -61,6 +61,7 @@ class NodeController extends Base{
             'node_id'=>addslashes($node_id)
         ]);
         $node_data=$this->post['node_data'] ?? '[]';
+        is_array($node_data) && $node_data=json_encode($node_data,JSON_UNESCAPED_UNICODE);
         $nodeModel->getLastestData();
         file_put_contents($nodeModel->LocalFilePath,$node_data);
         return self::returnActionResult([

@@ -82,13 +82,13 @@ class WhiteBordQueue extends QueueInstance {
                         break;
                 }
                 // 保存node中需要保存的数据
-                $saveNodeData && file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? []));
+                $saveNodeData && file_put_contents($nodeModel->LocalFilePath,json_encode($node['data']['node_data'] ?? [],JSON_UNESCAPED_UNICODE));
             }
         }
         // 更新 WhiteBord 和 Node 之间的对应关系
         $whiteBordNodeConnection=new WhiteBordNodeConnection($userModel);
         $whiteBordNodeConnection->updateConnection($queueStoreData['ID'],$nodeIds);
-        file_put_contents($whiteBordFilePath,json_encode($whiteBordData));
+        file_put_contents($whiteBordFilePath,json_encode($whiteBordData,JSON_UNESCAPED_UNICODE));
         return true;
     }
 }

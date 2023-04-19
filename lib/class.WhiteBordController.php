@@ -100,7 +100,7 @@ class WhiteBordController extends Base
         $storeData = $this->post['Data'] ?? [];
         $isDraft = $this->post['IsDraft'] ?? true;
         $whiteBordDir = WhiteBordFileManager::getWhiteBordFileDir($id, $loginUser->ID, $isDraft);
-        file_put_contents($whiteBordDir, json_encode($storeData));
+        file_put_contents($whiteBordDir, json_encode($storeData,JSON_UNESCAPED_UNICODE));
         $whiteBord = new WhiteBord($loginUser);
         $whiteBordModel = $whiteBord->updateWhiteBord($id, [
             'ID' => $id,

@@ -34,7 +34,7 @@ class NodeController extends Base{
         $nodeModel->where([sprintf("ID=%d;",$data['ID'])]);
         $nodeModel->getOneData();
         if ($nodeModel->updateNode($data) && !empty($nodeModel->LocalFilePath)){
-            is_array($nodeData) && $nodeData=json_encode($nodeData);
+            is_array($nodeData) && $nodeData=json_encode($nodeData,JSON_UNESCAPED_UNICODE);
             file_put_contents($nodeModel->LocalFilePath,$nodeData);
         }
         return self::returnActionResult([],true);

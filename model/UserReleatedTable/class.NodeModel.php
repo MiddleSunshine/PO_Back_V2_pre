@@ -7,11 +7,11 @@ class NodeModel extends BaseModel{
     public $Name;
     public $Type;
     public $LocalFilePath;
-    public function updateNode($newNode){
+    public function updateNode($newNode,$checkDate=true){
         $historyNodeLastUpdateTimestamp=strtotime($this->LastUpdateTime);
         $lastUpdateTimestamp=strtotime($newNode['LastUpdateTime']);
         // 如果数据库的数据更新，那么不更新
-        if ($historyNodeLastUpdateTimestamp>$lastUpdateTimestamp){
+        if ($checkDate && $historyNodeLastUpdateTimestamp>$lastUpdateTimestamp){
             return false;
         }
         $newNode['LastUpdateTime']=date("Y-m-d H:i:s");

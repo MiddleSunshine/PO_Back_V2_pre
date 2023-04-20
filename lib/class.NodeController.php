@@ -10,11 +10,12 @@ class NodeController extends Base{
         $nodeModel->where([sprintf("ID=%d",$ID)]);
         $nodeModel->getOneData();
         $returnData=[
-            'node_data'=>'',
+            'node_data'=>'[]',
             'data'=>$nodeModel->toArray()
         ];
         if (!empty($nodeModel->LocalFilePath)){
             $returnData['node_data']=file_get_contents($nodeModel->LocalFilePath);
+            empty($returnData['node_data']) && $returnData['node_data']='[]';
         }
         return self::returnActionResult($returnData);
     }
@@ -32,8 +33,8 @@ class NodeController extends Base{
         $nodeModel->select("*");
         $nodeModel->where([sprintf("ID=%d;",$data['ID'])]);
         $nodeModel->getOneData();
-        if ($nodeModel->updateNode($data) && !empty($nodeModel->LocalFilePath)){
-            is_array($nodeData) && $nodeData=json_encode($nodeData);
+        if ($nodeModel->updateNode($data,false) && !empty($nodeModel->LocalFilePath)){
+            is_array($nodeData) && $nodeData=json_encode($nodeData,JSON_UNESCAPED_UNICODE);
             file_put_contents($nodeModel->LocalFilePath,$nodeData);
         }
         return self::returnActionResult([],true);
@@ -60,6 +61,7 @@ class NodeController extends Base{
             'node_id'=>addslashes($node_id)
         ]);
         $node_data=$this->post['node_data'] ?? '[]';
+        is_array($node_data) && $node_data=json_encode($node_data,JSON_UNESCAPED_UNICODE);
         $nodeModel->getLastestData();
         file_put_contents($nodeModel->LocalFilePath,$node_data);
         return self::returnActionResult([

@@ -14,8 +14,10 @@ class DealWithQueue{
     }
 
     public function arrangeQueue($handlerId){
-        $queueInstance=new Queues();
-        $queueInstance->setQueue($handlerId);
+        if ($handlerId==0){
+            $queueInstance=new Queues();
+            $queueInstance->setQueue($handlerId,3);
+        }
     }
 
     public function handleQueue($handlerId){

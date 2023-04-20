@@ -11,7 +11,7 @@ class GlobalSearch{
         $returnData=[];
         $tempFileHandler=tmpfile();
         $tempFileInfo=stream_get_meta_data($tempFileHandler);
-        $cmd=sprintf("grep '%s' -li %s*",$keywords,WhiteBordFileManager::getNodeFileDir($this->usersModel->ID));
+        $cmd=sprintf("grep -li '%s' %s*",$keywords,WhiteBordFileManager::getNodeFileDir($this->usersModel->ID));
         $cmd=sprintf("%s > %s",$cmd,$tempFileInfo['uri']);
         exec($cmd);
         $searchResult=file_get_contents($tempFileInfo['uri']);
@@ -42,7 +42,7 @@ class GlobalSearch{
         $returnData=[];
         $tempFileHandler=tmpfile();
         $tempFileInfo=stream_get_meta_data($tempFileHandler);
-        $cmd=sprintf("grep '%s' -li %s*",$keywords,WhiteBordFileManager::getWhiteBordFileDir('',$this->usersModel->ID,$isDraft));
+        $cmd=sprintf("grep -li '%s' %s*",$keywords,WhiteBordFileManager::getWhiteBordFileDir('',$this->usersModel->ID,$isDraft));
         $cmd=sprintf("%s > %s",$cmd,$tempFileInfo['uri']);
         exec($cmd);
         $searchResult=file_get_contents($tempFileInfo['uri']);

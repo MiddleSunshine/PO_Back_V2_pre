@@ -38,28 +38,32 @@ class Queues{
         }
     }
 
-    public function setQueue($handlerId){
+    public function setQueue($handlerId,$handlerAmount){
         $files=scandir($this->todoQueueIndex);
         unset($files[0]);
         unset($files[1]);
         if (empty($files)){
             return true;
         }
-        $newQueuePath=$this->processingQueueIndex.$handlerId.DIRECTORY_SEPARATOR;
-        if (!is_dir($newQueuePath)){
-            mkdir($newQueuePath);
-            chmod($newQueuePath,0777);
-        }
-        $queueFilePath='';
-        foreach ($files as $file){
-            if (!file_exists($this->todoQueueIndex.$file)){
-                continue;
+        for ($handler=$handlerId;$handler<$handlerAmount;$handler++){
+            $newQueuePath=$this->processingQueueIndex.$handler.DIRECTORY_SEPARATOR;
+            if (!is_dir($newQueuePath)){
+                mkdir($newQueuePath);
+                chmod($newQueuePath,0777);
             }
-            // 将队列移动到指定的目录下，交给其他进程处理
-            rename($this->todoQueueIndex.$file,$newQueuePath.$file);
-            break;
+            $historyQueueAmount=count(scandir($newQueuePath))-2;
+            foreach ($files as $file){
+                if (!file_exists($this->todoQueueIndex.$file)){
+                    continue;
+                }
+                // 将队列移动到指定的目录下，交给其他进程处理
+                rename($this->todoQueueIndex.$file,$newQueuePath.$file);
+                $historyQueueAmount++;
+                if ($historyQueueAmount>100){
+                    break;
+                }
+            }
         }
-        return $queueFilePath;
     }
 
     public function addQueue(string $queueName,string $id,array|string $data,bool $updateQueueWhenExists=false){

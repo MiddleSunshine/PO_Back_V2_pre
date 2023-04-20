@@ -33,7 +33,24 @@ class NodeController extends Base{
         $nodeModel->select("*");
         $nodeModel->where([sprintf("ID=%d;",$data['ID'])]);
         $nodeModel->getOneData();
-        if ($nodeModel->updateNode($data) && !empty($nodeModel->LocalFilePath)){
+        if ($nodeModel->updateNode($data,false) && !empty($nodeModel->LocalFilePath)){
+//            switch ($data['Type']){
+//                case 'SheetNode':
+//                    foreach ($nodeData['sheet'] as &$sheet){
+//                        $data=$sheet['data'];
+//                        unset($sheet['data']);
+//                        $sheet['celldata']=[];
+//                        foreach ($data as $index=>$rows){
+//                            $rows=array_filter($rows,function ($column){
+//                                return !empty($column);
+//                            });
+//                            foreach ($rows as $column){
+//                                $sheet['celldata'][]=$column;
+//                            }
+//                        }
+//                    }
+//                    break;
+//            }
             is_array($nodeData) && $nodeData=json_encode($nodeData,JSON_UNESCAPED_UNICODE);
             file_put_contents($nodeModel->LocalFilePath,$nodeData);
         }

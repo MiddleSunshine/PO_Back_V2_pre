@@ -85,13 +85,13 @@ class BaseModel{
         return $data;
     }
 
-    public function getAllData(){
+    public function getAllData($index=''){
         $sql=$this->organizeSql();
         $this->reset();
         if(empty($sql)){
             return [];
         }
-        return $this->pdo->getRows($sql);
+        return $this->pdo->getRows($sql,$index);
     }
 
     protected function organizeSql(){

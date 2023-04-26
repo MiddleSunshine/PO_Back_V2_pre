@@ -13,9 +13,21 @@ class WhiteBordController extends Base
         $model = $whiteBoard->getModel();
         $model->select("ID,Title");
         $model->where([sprintf("ID in (%s)",$Ids)]);
+        $whiteBoards=$model->getAllData('ID');
+        $Ids=explode(',',$Ids);
+        $returnData=[];
+        $roads=[];
+        foreach ($Ids as $Id){
+            $roads[]=$Id;
+            if(isset($whiteBoards[$Id])){
+                $returnData[]=array_merge($whiteBoards[$Id],[
+                    'path'=>implode(',',$roads)
+                ]);
+            }
+        }
         return self::returnActionResult(
             [
-                'roads'=>$model->getAllData()
+                'roads'=>$returnData
             ]
         );
     }

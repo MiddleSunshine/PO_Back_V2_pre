@@ -1,19 +1,21 @@
 <?php
-require_once __DIR__.DIRECTORY_SEPARATOR."UserReleatedTable".DIRECTORY_SEPARATOR."class.WhiteBordModel.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "UserReleatedTable" . DIRECTORY_SEPARATOR . "class.WhiteBordModel.php";
 
-class WhiteBord extends BaseUserModel{
+class WhiteBord extends BaseUserModel
+{
 
     public function afterCreateTable()
     {
         $this->addWhiteBord("Index");
     }
 
-    public function addWhiteBord($title,$type=WhiteBordModel::TYPE_DRAFT):WhiteBordModel{
-        $whiteBordModel=$this->getModel();
+    public function addWhiteBord($title, $type = WhiteBordModel::TYPE_DRAFT): WhiteBordModel
+    {
+        $whiteBordModel = $this->getModel();
         $whiteBordModel->insertOneData(
             [
-                'Title'=>$title,
-                'Type'=>$type
+                'Title' => $title,
+                'Type' => $type
             ]
         );
         $whiteBordModel->select('ID');
@@ -22,34 +24,35 @@ class WhiteBord extends BaseUserModel{
         return $whiteBordModel;
     }
 
-    public function updateWhiteBord($ID,$data,$storeDataWhenExists=false):WhiteBordModel
+    public function updateWhiteBord($ID, $data, $storeDataWhenExists = false): WhiteBordModel
     {
-        $whiteBordModel=$this->getModel();
-        $whiteBordModel->where([sprintf("ID=%d",$ID)]);
+        $whiteBordModel = $this->getModel();
+        $whiteBordModel->where([sprintf("ID=%d", $ID)]);
         $whiteBordModel->getOneData();
-        if ($whiteBordModel->ID){
-            $whiteBordModel->updateData(sprintf('ID=%d',$ID),$data);
-        }else if ($storeDataWhenExists){
+        if ($whiteBordModel->ID) {
+            $whiteBordModel->updateData(sprintf('ID=%d', $ID), $data);
+        } else if ($storeDataWhenExists) {
             $whiteBordModel->insertOneData($data);
         }
         return $whiteBordModel;
     }
 
-    public function deleteWhiteBord(){
-
+    public function deleteWhiteBord()
+    {
     }
 
-    public function seleteWhiteBord(string $field,array $where){
-        $model=$this->getModel();
+    public function seleteWhiteBord(string $field, array $where)
+    {
+        $model = $this->getModel();
         $model->select($field);
         $model->where($where);
         $model->getOneData();
         return $model;
     }
 
-    public function getModel():WhiteBordModel
+    public function getModel(): WhiteBordModel
     {
-        $whiteBordModel=new WhiteBordModel();
+        $whiteBordModel = new WhiteBordModel();
         $whiteBordModel->setTable($this->getModalTableName());
         return $whiteBordModel;
     }

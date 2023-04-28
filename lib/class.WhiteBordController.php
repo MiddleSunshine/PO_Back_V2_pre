@@ -5,6 +5,32 @@ require_once INDEX_FILE . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . 
 
 class WhiteBordController extends Base
 {
+    public function WhiteBoardRoad()
+    {
+        $Ids = $this->post['Ids'] ?? "0";
+        $loginUser = LoginUser::getLoginUser($this->loginUserToken);
+        $whiteBoard = new WhiteBord($loginUser);
+        $model = $whiteBoard->getModel();
+        $model->select("ID,Title");
+        $model->where([sprintf("ID in (%s)",$Ids)]);
+        $whiteBoards=$model->getAllData('ID');
+        $Ids=explode(',',$Ids);
+        $returnData=[];
+        $roads=[];
+        foreach ($Ids as $Id){
+            $roads[]=$Id;
+            if(isset($whiteBoards[$Id])){
+                $returnData[]=array_merge($whiteBoards[$Id],[
+                    'path'=>implode(',',$roads)
+                ]);
+            }
+        }
+        return self::returnActionResult(
+            [
+                'roads'=>$returnData
+            ]
+        );
+    }
     public function SearchWhiteBoard()
     {
         $keyword = $this->post['Keywords'] ?? '';
@@ -56,13 +82,14 @@ class WhiteBordController extends Base
             $nodeData = [];
             if (!empty($nodeIds)) {
                 $nodeData = $nodeInstance->searchNode('*', [
-                    sprintf("node_id in (%s)",
+                    sprintf(
+                        "node_id in (%s)",
                         '"' . implode('","', array_keys($nodeIds)) . '"'
                     )
                 ]);
             }
             foreach ($nodeData as $nodeItem) {
-                $dataBaseLastUpdateTimestamp = empty($nodeItem['LastUpdateTime'])?0:strtotime($nodeItem['LastUpdateTime']);
+                $dataBaseLastUpdateTimestamp = empty($nodeItem['LastUpdateTime']) ? 0 : strtotime($nodeItem['LastUpdateTime']);
                 // 拥有本地文件 && 数据库数据更新
                 if (!empty($nodeItem['LocalFilePath']) && isset($nodeIdsLastUpdateTime[$nodeItem['node_id']]) && $dataBaseLastUpdateTimestamp > $nodeIdsLastUpdateTime[$nodeItem['node_id']]) {
                     $nData = file_get_contents($nodeItem['LocalFilePath']);
@@ -100,7 +127,7 @@ class WhiteBordController extends Base
         $storeData = $this->post['Data'] ?? [];
         $isDraft = $this->post['IsDraft'] ?? true;
         $whiteBordDir = WhiteBordFileManager::getWhiteBordFileDir($id, $loginUser->ID, $isDraft);
-        file_put_contents($whiteBordDir, json_encode($storeData,JSON_UNESCAPED_UNICODE));
+        file_put_contents($whiteBordDir, json_encode($storeData, JSON_UNESCAPED_UNICODE));
         $whiteBord = new WhiteBord($loginUser);
         $whiteBordModel = $whiteBord->updateWhiteBord($id, [
             'ID' => $id,

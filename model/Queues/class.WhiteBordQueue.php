@@ -80,6 +80,7 @@ class WhiteBordQueue extends QueueInstance
                         //                        break;
                     case 'SheetNode':
                     case 'DrawNode':
+                    case 'FullCalendarNode':
                         $saveNodeData = false;
                         break;
                 }
